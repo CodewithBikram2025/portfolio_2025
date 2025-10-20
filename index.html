@@ -90,147 +90,6 @@ background: linear-gradient(135deg, #667eee 0%, #764ba2 100%);
 backdrop-filter: blur(10px);
 background: rgba(255, 255, 255, 0.1);
 }
-
-/* Enhanced Glowing Profile Photo Effects */
-.profile-glow-container {
-position: relative;
-animation: float 6s ease-in-out infinite;
-}
-
-@keyframes float {
-0%, 100% { transform: translateY(0px); }
-50% { transform: translateY(-20px); }
-}
-
-.profile-photo-wrapper {
-position: relative;
-width: 100%;
-aspect-ratio: 1;
-border-radius: 50%;
-overflow: hidden;
-}
-
-/* Multi-layer glow effect */
-.profile-photo-wrapper::before {
-content: '';
-position: absolute;
-inset: -8px;
-background: linear-gradient(45deg, #33ec0a, #00d9ff, #ff00ea, #ffea00, #33ec0a);
-background-size: 400% 400%;
-border-radius: 50%;
-z-index: -1;
-animation: glowRotate 8s linear infinite;
-filter: blur(20px);
-opacity: 0.8;
-}
-
-.profile-photo-wrapper::after {
-content: '';
-position: absolute;
-inset: -4px;
-background: linear-gradient(90deg, #33ec0a, #00d9ff, #ff00ea, #33ec0a);
-background-size: 300% 300%;
-border-radius: 50%;
-z-index: -1;
-animation: glowRotate 6s linear infinite reverse;
-filter: blur(10px);
-}
-
-@keyframes glowRotate {
-0% { background-position: 0% 50%; }
-50% { background-position: 100% 50%; }
-100% { background-position: 0% 50%; }
-}
-
-.profile-photo-inner {
-position: relative;
-width: 100%;
-height: 100%;
-border-radius: 50%;
-border: 8px solid white;
-box-shadow: 
-    0 0 30px rgba(51, 236, 10, 0.6),
-    0 0 60px rgba(51, 236, 10, 0.4),
-    0 0 90px rgba(51, 236, 10, 0.2),
-    inset 0 0 20px rgba(51, 236, 10, 0.1);
-background-size: cover;
-background-position: center;
-transition: transform 0.5s ease, box-shadow 0.5s ease;
-}
-
-.profile-photo-inner:hover {
-transform: scale(1.05);
-box-shadow: 
-    0 0 40px rgba(51, 236, 10, 0.8),
-    0 0 80px rgba(51, 236, 10, 0.6),
-    0 0 120px rgba(51, 236, 10, 0.4),
-    inset 0 0 30px rgba(51, 236, 10, 0.2);
-}
-
-/* Pulse animation for the outer glow */
-.profile-glow-container::before {
-content: '';
-position: absolute;
-inset: -30px;
-background: radial-gradient(circle, rgba(51, 236, 10, 0.3) 0%, transparent 70%);
-border-radius: 50%;
-animation: pulse 3s ease-in-out infinite;
-z-index: -2;
-}
-
-@keyframes pulse {
-0%, 100% { transform: scale(1); opacity: 0.5; }
-50% { transform: scale(1.1); opacity: 0.8; }
-}
-
-/* Sparkle effect */
-.sparkle {
-position: absolute;
-width: 4px;
-height: 4px;
-background: white;
-border-radius: 50%;
-box-shadow: 0 0 10px #33ec0a, 0 0 20px #33ec0a;
-animation: sparkleMove 3s ease-in-out infinite;
-opacity: 0;
-}
-
-.sparkle:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; }
-.sparkle:nth-child(2) { top: 80%; left: 30%; animation-delay: 0.5s; }
-.sparkle:nth-child(3) { top: 30%; right: 20%; animation-delay: 1s; }
-.sparkle:nth-child(4) { bottom: 20%; right: 30%; animation-delay: 1.5s; }
-.sparkle:nth-child(5) { top: 50%; left: 10%; animation-delay: 2s; }
-
-@keyframes sparkleMove {
-0%, 100% { opacity: 0; transform: translateY(0) scale(0); }
-50% { opacity: 1; transform: translateY(-20px) scale(1); }
-}
-
-/* Enhanced experience badge */
-.experience-badge {
-position: absolute;
-bottom: -1rem;
-right: -1rem;
-width: 7rem;
-height: 7rem;
-background: linear-gradient(135deg, #33ec0a 0%, #00d9ff 100%);
-border-radius: 50%;
-display: flex;
-align-items: center;
-justify-content: center;
-color: white;
-font-weight: bold;
-box-shadow: 
-    0 8px 32px rgba(51, 236, 10, 0.4),
-    0 0 0 8px rgba(255, 255, 255, 0.2);
-animation: badgePulse 2s ease-in-out infinite;
-z-index: 10;
-}
-
-@keyframes badgePulse {
-0%, 100% { transform: scale(1); }
-50% { transform: scale(1.05); }
-}
 </style>
 </head>
 <body class="relative z-10 text-gray-800">
@@ -322,18 +181,13 @@ BIKRAMJIT PAKHIRA
 </a>
 </div>
 </div>
-<div class="fade-in-up profile-glow-container">
-<div class="profile-photo-wrapper">
-<div class="profile-photo-inner" style="background-image: url('pic.jpg');"></div>
-<span class="sparkle"></span>
-<span class="sparkle"></span>
-<span class="sparkle"></span>
-<span class="sparkle"></span>
-<span class="sparkle"></span>
+<div class="fade-in-up relative">
+<div class="relative w-full aspect-square rounded-full overflow-hidden border-8 border-white shadow-2xl transform hover:scale-105 transition-transform duration-300" style="background-image: url('pic.jpg'); background-size: cover; background-position: center;">
+<div class="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent"></div>
 </div>
-<div class="experience-badge">
+<div class="absolute -bottom-4 -right-4 w-24 h-24 bg-primary rounded-full flex items-center justify-center text-white text-sm font-medium">
 <div class="text-center">
-<div class="font-bold text-base">1.5+ Years</div>
+<div class="font-bold">1.5+ Years</div>
 <div class="text-xs">Experience</div>
 </div>
 </div>
@@ -353,11 +207,11 @@ BIKRAMJIT PAKHIRA
       <div>
         <h3 class="text-2xl font-semibold mb-4 text-gray-600">Who I Am</h3>
         <i><p class="text-lg max-w-3xl mb-10" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">
-          I'm a passionate 2nd-year college student currently pursuing my degree in Computer Science & Engineering at B. P. Poddar Institute of Management & Technology.
+          I’m a passionate 2nd-year college student currently pursuing my degree in Computer Science & Engineering at B. P. Poddar Institute of Management & Technology.
           I have a strong interest in web development, AI, or cybersecurity, and I love exploring new technologies and building projects that solve real-world problems.
         </p>
         <p class="text-lg max-w-3xl mb-10" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">
-          I'm currently focusing on improving my knowledge in areas like front-end development and DSA in C language, and I'm always eager to connect with like-minded individuals and industry professionals.
+          I’m currently focusing on improving my knowledge in areas like front-end development and DSA in C language, and I’m always eager to connect with like-minded individuals and industry professionals.
         </p></i>
 
         <a href="Bikramjit resume.pdf" download class="inline-block bg-primary text-white px-6 py-3 rounded-button font-medium hover:bg-secondary transition-all">Download Resume</a>
@@ -528,7 +382,7 @@ BIKRAMJIT PAKHIRA
 <section id="projects" class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-20 text-white text-center">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="text-center mb-16 fade-in-up">
-<h2 class="text-5xl font-bold mb-6">Featured<span class="text-green-500"> Projects</span></h2>
+<h2 class="text-5xl font-bold mb-6">Featured<span class="text-green-500">Projects</span></h2>
 <p class="text-lg text-gray-600">Some of my recent work and personal projects</p>
 </div>
 <div class="mb-8 flex justify-center fade-in-up">
@@ -540,10 +394,30 @@ BIKRAMJIT PAKHIRA
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 <div class="project-card bg-white bg-opacity-10 p-0 rounded-xl overflow-hidden backdrop-blur-lg text-left shadow-lg" data-category="web">
+<div class="h-48 bg-cover bg-center" style="background-image: url('pic1.png')"></div>
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">Healthmate App</h3>
+<p class="text-gray-400 mb-4">🩺 Welcome to HealthMate 2025
+Your personal guide to better health. HealthMate 2025 helps you track your fitness, monitor your health stats, and stay informed with the latest wellness tips. Start your journey toward a healthier you — one step at a time.</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">HTML</span>
+<span class="px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">CSS</span>
+<span class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">JavaScript</span>
+</div>
+<div class="flex gap-3">
+<a href="https://healthmate2025.ct.ws" target="_blank" 
+   class="flex items-center gap-2 text-primary hover:text-secondary transition-colors">
+  <i class="ri-external-link-line"></i>
+  <span class="text-sm">Live Demo</span>
+</a>
+</div>
+</div>
+</div>
+<div class="project-card bg-white bg-opacity-10 p-0 rounded-xl overflow-hidden backdrop-blur-lg text-left shadow-lg" data-category="web">
 <div class="h-48 bg-cover bg-center" style="background-image: url('pic2.png')"></div>
 <div class="p-6">
 <h3 class="text-xl font-semibold mb-2">Sitara.ai</h3>
-<p class="text-gray-400 mb-4">Sitaraai is a smart AI-powered platform built to assist, create, and explore. From answering questions to generating ideas, Sitaraai helps you work smarter and faster using the power of artificial intelligence.</p>
+<p class="text-gray-400 mb-4">Sitaraai is a smart AI-powered platform built to assist, create, and explore. From answering questions to generating ideas, Sitaraai helps you work smarter and faster using the power of artificial intelligence.</p>
 <div class="flex flex-wrap gap-2 mb-4">
 <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">HTML</span>
 <span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">CSS</span>
@@ -562,7 +436,7 @@ BIKRAMJIT PAKHIRA
 <div class="h-48 bg-cover bg-center" style="background-image: url('pic3.png')"></div>
 <div class="p-6">
 <h3 class="text-xl font-semibold mb-2">Portfolio Website</h3>
-<p class="text-gray-400 mb-4">Design a personal portfolio website for a frontend developer built with modern web technologies. Use Tailwind CSS, include a hero section with name, title, and profile image, a skills section with progress bars, and a projects section with live demo buttons. Make it responsive and use smooth scroll and fade-in animations.</p>
+<p class="text-gray-400 mb-4">Design a personal portfolio website for a frontend developer built with modern web technologies. Use Tailwind CSS, include a hero section with name, title, and profile image, a skills section with progress bars, and a projects section with live demo buttons. Make it responsive and use smooth scroll and fade-in animations.</p>
 <div class="flex flex-wrap gap-2 mb-4">
 <span class="px-3 py-1 bg-orange-100 text-orange-800 text-xs rounded-full">HTML/CSS</span>
 <span class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">JavaScript</span>
@@ -620,7 +494,7 @@ BIKRAMJIT PAKHIRA
 <div class="p-6">
 <h3 class="text-xl font-semibold mb-2">Khaabaradda Restrurent</h3>
 <p class="text-gray-400 mb-4">KhaabarAdda – Taste That Speaks for Itself
-KhaabarAdda is an online food platform offering a diverse menu of high-quality dishes. Our goal is to deliver fresh, flavorful meals quickly and conveniently to our customers.</p>
+KhaabarAdda is an online food platform offering a diverse menu of high-quality dishes. Our goal is to deliver fresh, flavorful meals quickly and conveniently to our customers.</p>
 <div class="flex flex-wrap gap-2 mb-4">
 <span class="px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">HTML</span>
 <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">CSS</span>
@@ -679,7 +553,7 @@ KhaabarAdda is an online food platform offering a diverse menu of high-quality d
 <section id="contact" class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-20 text-white text-center">
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="text-center mb-16 fade-in-up">
-<h2 class="text-5xl font-bold mb-6">Get In<span class="text-green-500"> Touch</span></h2>
+<h2 class="text-5xl font-bold mb-6">Get In<span class="text-green-500">Touch</span></h2>
 <p class="text-lg text-gray-600">Let's discuss your next project or collaboration opportunity</p>
 </div>
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -736,19 +610,19 @@ KhaabarAdda is an online food platform offering a diverse menu of high-quality d
 <form id="contact-form" class="space-y-6">
 <div>
 <label for="name" class="block text-sm font-medium text-gray-500 mb-2">Name</label>
-<input type="text" id="name" name="name" required class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg w-full">
+<input type="text" id="name" name="name" required class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg">
 </div>
 <div>
 <label for="email" class="block text-sm font-medium text-gray-500 mb-2">Email</label>
-<input type="email" id="email" name="email" required class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg w-full">
+<input type="email" id="email" name="email" required class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg">
 </div>
 <div>
 <label for="subject" class="block text-sm font-medium text-gray-500 mb-2">Subject</label>
-<input type="text" id="subject" name="subject" required class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg w-full">
+<input type="text" id="subject" name="subject" required class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg">
 </div>
 <div>
 <label for="message" class="block text-sm font-medium text-gray-500 mb-2">Message</label>
-<textarea id="message" name="message" rows="5" required class="bg-white bg-opacity-10 p-6 rounded-xl backdrop-blur-lg text-left shadow-lg resize-none w-full"></textarea>
+<textarea id="message" name="message" rows="5" required class="bg-white bg-opacity-10 p-6 rounded-xl backdrop-blur-lg text-left shadow-lg resize-none"></textarea>
 </div>
 <button type="submit" class="w-full bg-primary hover:bg-secondary text-white py-3 px-6 !rounded-button font-medium transition-all duration-300 transform hover:scale-105 whitespace-nowrap">
 Send Message
@@ -769,7 +643,7 @@ Send Message
 <button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 bg-primary hover:bg-secondary text-white rounded-full shadow-lg opacity-0 invisible transition-all duration-300 z-50">
 <i class="ri-arrow-up-line"></i>
 </button>
-<script>
+<script id="typing-animation">
 document.addEventListener('DOMContentLoaded', function() {
 const roles = ['Coder', 'Designer', 'Programmer', 'Web Developer'];
 const typingElement = document.getElementById('typing-text');
@@ -797,7 +671,10 @@ typeSpeed = 500;
 setTimeout(type, typeSpeed);
 }
 type();
-
+});
+</script>
+<script id="mobile-menu-toggle">
+document.addEventListener('DOMContentLoaded', function() {
 const mobileMenuBtn = document.getElementById('mobile-menu-btn');
 const mobileMenu = document.getElementById('mobile-menu');
 mobileMenuBtn.addEventListener('click', function() {
@@ -814,7 +691,10 @@ link.addEventListener('click', function() {
 mobileMenu.classList.remove('open');
 });
 });
-
+});
+</script>
+<script id="scroll-animations">
+document.addEventListener('DOMContentLoaded', function() {
 const observerOptions = {
 threshold: 0.1,
 rootMargin: '0px 0px -50px 0px'
@@ -836,7 +716,10 @@ bar.classList.add('animate');
 }, observerOptions);
 const fadeElements = document.querySelectorAll('.fade-in-up');
 fadeElements.forEach(el => observer.observe(el));
-
+});
+</script>
+<script id="project-filter">
+document.addEventListener('DOMContentLoaded', function() {
 const filterBtns = document.querySelectorAll('.filter-btn');
 const projectCards = document.querySelectorAll('.project-card');
 filterBtns.forEach(btn => {
@@ -866,10 +749,14 @@ card.style.display = 'none';
 });
 });
 filterBtns[0].classList.add('active', 'bg-primary', 'text-white');
-
+});
+</script>
+<script id="contact-form-handler">
+document.addEventListener('DOMContentLoaded', function() {
 const contactForm = document.getElementById('contact-form');
 contactForm.addEventListener('submit', function(e) {
 e.preventDefault();
+const formData = new FormData(this);
 const submitBtn = this.querySelector('button[type="submit"]');
 const originalText = submitBtn.textContent;
 submitBtn.textContent = 'Sending...';
@@ -881,7 +768,10 @@ submitBtn.textContent = originalText;
 submitBtn.disabled = false;
 }, 1500);
 });
-
+});
+</script>
+<script id="back-to-top-functionality">
+document.addEventListener('DOMContentLoaded', function() {
 const backToTopBtn = document.getElementById('back-to-top');
 window.addEventListener('scroll', function() {
 if (window.pageYOffset > 300) {
@@ -899,32 +789,13 @@ behavior: 'smooth'
 });
 });
 });
-
 function playAudio() {
   const audio = document.getElementById('background-audio');
   audio.play();
-  document.getElementById('audio-control').style.display = 'none';
+  document.getElementById('audio-control').style.display = 'none'; // Hide button after play
 }
 </script>
 </body>
-</html>left shadow-lg" data-category="web">
-<div class="h-48 bg-cover bg-center" style="background-image: url('pic1.png')"></div>
-<div class="p-6">
-<h3 class="text-xl font-semibold mb-2">Healthmate App</h3>
-<p class="text-gray-400 mb-4">🩺 Welcome to HealthMate 2025
-Your personal guide to better health. HealthMate 2025 helps you track your fitness, monitor your health stats, and stay informed with the latest wellness tips. Start your journey toward a healthier you — one step at a time.</p>
-<div class="flex flex-wrap gap-2 mb-4">
-<span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">HTML</span>
-<span class="px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">CSS</span>
-<span class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">JavaScript</span>
-</div>
-<div class="flex gap-3">
-<a href="https://healthmate2025.ct.ws" target="_blank" 
-   class="flex items-center gap-2 text-primary hover:text-secondary transition-colors">
-  <i class="ri-external-link-line"></i>
-  <span class="text-sm">Live Demo</span>
-</a>
-</div>
-</div>
-</div>
-<div class="project-card bg-white bg-opacity-10 p-0 rounded-xl overflow-hidden backdrop-blur-lg text-
+</html>
+
+
