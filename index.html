@@ -90,6 +90,105 @@ background: linear-gradient(135deg, #667eee 0%, #764ba2 100%);
 backdrop-filter: blur(10px);
 background: rgba(255, 255, 255, 0.1);
 }
+.menu-icon {
+    font-size: 35px;
+    cursor: pointer;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1001;
+    color: #4c4c4c;
+}
+
+.sidebar {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 70%;
+    width: 0%;
+    background-color: #000000b8;
+    z-index: 999;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.479);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    border-bottom-left-radius: 100%;
+    transition: all 0.5s ease;
+    overflow-x: hidden;
+}
+
+.close-icon {
+    font-size: 50px;
+    color: lightgray;
+    padding-left: 10px;
+    cursor: pointer;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.sidebar ul {
+    padding-left: 20px;
+}
+
+.sidebar ul li {
+    list-style: none;
+    margin-bottom: 30px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: lightgray;
+    font-size: 30px;
+    font-weight: 900;
+    text-shadow: 0 0 15px #4c4c4c;
+}
+
+.social-sidebar {
+    padding-left: 20px;
+    margin-top: 60px;
+    white-space: nowrap;
+}
+
+.social-sidebar a {
+    font-size: 35px;
+    padding: 5px 5px;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+/* Sidebar open animation */
+.sidebar.open-sidebar {
+    animation: openSideBarAnimation 1.5s forwards;
+}
+
+@keyframes openSideBarAnimation {
+    to {
+        width: 80%;
+        opacity: 1;
+        bottom: 0;
+        border-radius: 0;
+    }
+}
+
+/* Sidebar close animation */
+.sidebar.close-sidebar {
+    animation: closeSideBarAnimation 1.5s forwards;
+}
+
+@keyframes closeSideBarAnimation {
+    from {
+        width: 80%;
+        opacity: 1;
+        bottom: 0;
+        border-radius: 0;
+    }
+    to {
+        width: 0;
+        opacity: 0;
+        bottom: 70%;
+        border-bottom-left-radius: 50%;
+    }
+}
+  
 </style>
 </head>
 <body class="relative z-10 text-gray-800">
@@ -125,14 +224,28 @@ background: rgba(255, 255, 255, 0.1);
 </div>
 </div>
 </nav>
-<div id="mobile-menu" class="mobile-menu fixed top-16 right-0 w-64 h-full bg-white shadow-lg md:hidden">
-<div class="px-6 py-4 space-y-4">
-<a href="#home" class="block text-gray-700 hover:text-primary py-2 text-sm font-medium transition-colors">Home</a>
-<a href="#about me" class="block text-gray-700 hover:text-primary py-2 text-sm font-medium transition-colors">About Me</a>
-<a href="#skills" class="block text-gray-700 hover:text-primary py-2 text-sm font-medium transition-colors">Skills</a>
-<a href="#projects" class="block text-gray-700 hover:text-primary py-2 text-sm font-medium transition-colors">Projects</a>
-<a href="#contact" class="block text-gray-700 hover:text-primary py-2 text-sm font-medium transition-colors">Contact</a>
+<!-- Sidebar Trigger Icon -->
+<div class="menu-icon">
+    <i class='bx bx-menu'></i>
 </div>
+
+<!-- Sidebar Structure -->
+<div class="sidebar close-sidebar">
+    <div class="close-icon">
+        <i class='bx bx-x'></i>
+    </div>
+    <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="social-sidebar">
+        <a href="#"><i class='bx bxl-youtube'></i></a>
+        <a href="#"><i class='bx bxl-github'></i></a>
+        <a href="#"><i class='bx bxl-linkedin-square'></i></a>
+    </div>
 </div>
 </header>
 <div id="audio-control" class="fixed bottom-4 right-4 z-50">
@@ -692,6 +805,22 @@ mobileMenu.classList.remove('open');
 });
 });
 });
+  // Sidebar elements
+const sideBar = document.querySelector('.sidebar');
+const menu = document.querySelector('.menu-icon');
+const closeIcon = document.querySelector('.close-icon');
+
+// Open sidebar
+menu.addEventListener("click", function() {
+    sideBar.classList.remove("close-sidebar");
+    sideBar.classList.add("open-sidebar");
+});
+
+// Close sidebar
+closeIcon.addEventListener("click", function() {
+    sideBar.classList.remove("open-sidebar");
+    sideBar.classList.add("close-sidebar");
+});
 </script>
 <script id="scroll-animations">
 document.addEventListener('DOMContentLoaded', function() {
@@ -797,6 +926,7 @@ function playAudio() {
 </script>
 </body>
 </html>
+
 
 
 
