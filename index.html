@@ -132,6 +132,12 @@ background: rgba(255, 255, 255, 0.1);
   .menu-icon { display: none !important; }
   .sidebar { display: none !important; } /* Hide sidebar on desktop */
 }
+
+/* Three.js Canvas Styling */
+#threejs-canvas {
+  display: block;
+  background-color: transparent; /* Ensure canvas background is transparent */
+}
 </style>
 </head>
 <body class="relative z-10 text-gray-800">
@@ -163,6 +169,7 @@ background: rgba(255, 255, 255, 0.1);
       <a href="#about%20me" class="text-2xl font-bold text-white hover:text-primary transition-all">About Me</a>
       <a href="#skills"    class="text-2xl font-bold text-white hover:text-primary transition-all">Skills</a>
       <a href="#projects"  class="text-2xl font-bold text-white hover:text-primary transition-all">Projects</a>
+      <a href="#threejs-animation" class="text-2xl font-bold text-white hover:text-primary transition-all">3D Animation</a>
       <a href="#contact"   class="text-2xl font-bold text-white hover:text-primary transition-all">Contact</a>
     </nav>
   </div>
@@ -182,10 +189,10 @@ background: rgba(255, 255, 255, 0.1);
 <a href="#about%20me" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">About Me</a>
 <a href="#skills" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Skills</a>
 <a href="#projects" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Projects</a>
+<a href="#threejs-animation" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">3D Animation</a>
 <a href="#contact" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Contact</a>
 </div>
 </div>
-<!-- The mobile menu button (<div class="md:hidden">...</div>) is removed from here -->
 </div>
 </nav>
 </header>
@@ -623,6 +630,20 @@ KhaabarAdda is an online food platform offering a diverse menu of high-quality d
 </div>
 </div>  
 </section>
+
+<!-- New Three.js Animation Section -->
+<section id="threejs-animation" class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-20 text-white text-center">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16 fade-in-up">
+      <h2 class="text-5xl font-bold mb-6">Interactive <span class="text-green-500">3D</span></h2>
+      <p class="text-lg text-gray-400">A look at some 3D capabilities</p>
+    </div>
+    <div class="fade-in-up bg-white bg-opacity-10 p-6 rounded-xl backdrop-blur-lg text-left shadow-lg flex justify-center items-center" style="min-height: 500px;">
+      <canvas id="threejs-canvas" class="w-full h-full"></canvas>
+    </div>
+  </div>
+</section>
+
 <section id="contact" class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-20 text-white text-center">
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="text-center mb-16 fade-in-up">
@@ -913,8 +934,78 @@ function playAudio() {
   document.getElementById('audio-control').style.display = 'none'; // Hide button after play
 }
 </script>
+
+<!-- THREE.JS Library -->
+<script async src="https://unpkg.com/three@0.126.0/build/three.min.js"></script>
+
+<!-- THREE.JS Animation Script -->
+<script id="threejs-animation-script">
+document.addEventListener('DOMContentLoaded', function() {
+    const canvas = document.getElementById('threejs-canvas');
+    if (!canvas) {
+        console.error("Three.js canvas element not found!");
+        return;
+    }
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true }); // alpha: true for transparent background
+
+    // Adjust renderer size to fit parent container initially
+    const parent = canvas.parentElement;
+    renderer.setSize(parent.clientWidth, parent.clientHeight);
+
+    // Geometry, Material, Mesh
+    const geometry = new THREE.BoxGeometry(1, 1, 1); // A simple cube
+    const material = new THREE.MeshPhongMaterial({ color: 0x33ec0a }); // Green material
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0x404040, 2); // soft white light
+    scene.add(ambientLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(5, 5, 5).normalize();
+    scene.add(directionalLight);
+
+    camera.position.z = 5;
+
+    // Animation loop
+    const animate = function () {
+        requestAnimationFrame(animate);
+
+        cube.rotation.x += 0.005;
+        cube.rotation.y += 0.005;
+
+        renderer.render(scene, camera);
+    };
+
+    animate();
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        const parent = canvas.parentElement;
+        camera.aspect = parent.clientWidth / parent.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(parent.clientWidth, parent.clientHeight);
+    });
+
+    // Intersection Observer to start/stop animation when in view
+    const threeJsSection = document.getElementById('threejs-animation');
+    const threeJsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animate(); // Start animation when section is visible
+            } else {
+                // Optionally stop animation when out of view to save resources
+                // cancelAnimationFrame(animate); // This would require more complex handling of requestAnimationFrame
+            }
+        });
+    }, { threshold: 0.2 }); // Trigger when 20% of the section is visible
+
+    threeJsObserver.observe(threeJsSection);
+
+});
+</script>
 </body>
 </html>
-
-
-
