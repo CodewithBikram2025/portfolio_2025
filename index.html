@@ -73,13 +73,49 @@ transition: all 0.3s ease;
 .project-card:hover {
 transform: translateY(-8px);
 }
+/* New mobile menu styles */
 .mobile-menu {
-transform: translateX(100%);
-transition: transform 0.3s ease;
+  position: fixed;
+  top: 0; /* Changed from 16 to 0 to cover full height */
+  right: 0;
+  width: 100%; /* Full width on mobile */
+  max-width: 300px; /* Max width for larger screens */
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9); /* Slightly more opaque for readability */
+  backdrop-filter: blur(15px); /* Stronger blur for glass effect */
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2);
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother animation */
+  z-index: 100; /* Ensure it's above other content */
+  display: flex; /* Use flexbox for vertical centering/spacing */
+  flex-direction: column;
+  justify-content: center; /* Center items vertically */
+  padding: 2rem;
 }
+
 .mobile-menu.open {
-transform: translateX(0);
+  transform: translateX(0);
 }
+
+.mobile-menu a {
+  padding: 1rem 0;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* Subtle separator */
+}
+
+.mobile-menu a:last-child {
+  border-bottom: none;
+}
+
+.mobile-menu a:hover {
+  color: #33ec0a;
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
 html {
 scroll-behavior: smooth;
 }
@@ -90,6 +126,33 @@ background: linear-gradient(135deg, #667eee 0%, #764ba2 100%);
 backdrop-filter: blur(10px);
 background: rgba(255, 255, 255, 0.1);
 }
+/* New header/navbar specific styles */
+.header-glass {
+    background: rgba(255, 255, 255, 0.15); /* Lighter glass effect for header */
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+.nav-link {
+    position: relative;
+    padding: 0.5rem 0;
+}
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: #33ec0a;
+    transition: all 0.3s ease-out;
+    transform: translateX(-50%);
+}
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
+}
+
 </style>
 </head>
 <body class="relative z-10 text-gray-800">
@@ -103,36 +166,42 @@ background: rgba(255, 255, 255, 0.1);
   Your browser does not support the audio element.
 </audio>
 
-<header class="fixed top-0 w-full bg-white/90 backdrop-blur-md z-50 border-b border-gray-100">
+<header class="fixed top-0 w-full header-glass z-50">
 <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex justify-between items-center h-16">
 <div class="flex-shrink-0">
-<h1 class="text-xl font-bold text-gray-900">Portfolio</h1>
+<a href="#home" class="text-2xl font-extrabold text-white bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+  Bikramjit Pakhira
+</a>
 </div>
 <div class="hidden md:block">
 <div class="ml-10 flex items-baseline space-x-8">
-<a href="#home" class="text-gray-800 hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Home</a>
-<a href="#about me" class="text-gray-800 hover:text-primary px-3 py-2 text-sm font-medium transition-colors">About Me</a>
-<a href="#skills" class="text-gray-800 hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Skills</a>
-<a href="#projects" class="text-gray-800 hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Projects</a>
-<a href="#contact" class="text-gray-800 hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Contact</a>
+<a href="#home" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Home</a>
+<a href="#about me" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">About Me</a>
+<a href="#skills" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Skills</a>
+<a href="#projects" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Projects</a>
+<a href="#contact" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Contact</a>
 </div>
 </div>
 <div class="md:hidden">
-<button id="mobile-menu-btn" class="w-8 h-8 flex items-center justify-center text-gray-700 hover:text-primary">
-<i class="ri-menu-line ri-lg"></i>
+<button id="mobile-menu-btn" class="w-10 h-10 flex items-center justify-center text-white hover:text-primary transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary rounded-md">
+<i class="ri-menu-line text-2xl"></i>
 </button>
 </div>
 </div>
 </nav>
-<div id="mobile-menu" class="mobile-menu fixed top-16 right-0 w-64 h-full bg-white shadow-lg md:hidden">
-<div class="px-6 py-4 space-y-4">
-<a href="#home" class="block text-gray-700 hover:text-primary py-2 text-sm font-medium transition-colors">Home</a>
-<a href="#about me" class="block text-gray-700 hover:text-primary py-2 text-sm font-medium transition-colors">About Me</a>
-<a href="#skills" class="block text-gray-700 hover:text-primary py-2 text-sm font-medium transition-colors">Skills</a>
-<a href="#projects" class="block text-gray-700 hover:text-primary py-2 text-sm font-medium transition-colors">Projects</a>
-<a href="#contact" class="block text-gray-700 hover:text-primary py-2 text-sm font-medium transition-colors">Contact</a>
-</div>
+<div id="mobile-menu" class="mobile-menu">
+  <!-- Close button inside mobile menu -->
+  <button id="mobile-menu-close-btn" class="absolute top-4 right-4 text-gray-700 hover:text-primary transition-colors">
+    <i class="ri-close-line text-3xl"></i>
+  </button>
+  <div class="px-6 py-4 space-y-4">
+    <a href="#home" class="block text-gray-700 hover:text-primary py-2 text-sm font-medium transition-colors">Home</a>
+    <a href="#about me" class="block text-gray-700 hover:text-primary py-2 text-sm font-medium transition-colors">About Me</a>
+    <a href="#skills" class="block text-gray-700 hover:text-primary py-2 text-sm font-medium transition-colors">Skills</a>
+    <a href="#projects" class="block text-gray-700 hover:text-primary py-2 text-sm font-medium transition-colors">Projects</a>
+    <a href="#contact" class="block text-gray-700 hover:text-primary py-2 text-sm font-medium transition-colors">Contact</a>
+  </div>
 </div>
 </header>
 <div id="audio-control" class="fixed bottom-4 right-4 z-50">
@@ -200,12 +269,12 @@ BIKRAMJIT PAKHIRA
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16 fade-in-up">
       <h2 class="text-5xl font-bold mb-6">About <span class="text-green-500">Me</span></h2>
-      <p class="text-lg text-gray-600">Who I am and what I do</p>
+      <p class="text-lg text-gray-400">Who I am and what I do</p>
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start fade-in-up">
       <!-- Text Content -->
       <div>
-        <h3 class="text-2xl font-semibold mb-4 text-gray-600">Who I Am</h3>
+        <h3 class="text-2xl font-semibold mb-4 text-white">Who I Am</h3>
         <i><p class="text-lg max-w-3xl mb-10" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">
           I’m a passionate 2nd-year college student currently pursuing my degree in Computer Science & Engineering at B. P. Poddar Institute of Management & Technology.
           I have a strong interest in web development, AI, or cybersecurity, and I love exploring new technologies and building projects that solve real-world problems.
@@ -220,28 +289,28 @@ BIKRAMJIT PAKHIRA
       <!-- Right Column: Timeline -->
       <div class="bg-white bg-opacity-10 p-6 rounded-xl backdrop-blur-lg text-left shadow-lg">  
         <!-- Item 1 -->
-        <div>
-          <h4 class="text-2xl font-semibol text-green-400 mb-4">Primary Education</h4>
-          <p class="text-lg max-w-3xl mb-2" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">Ghatal Vidyasagar High School</p>
-          <p class="text-sm text-gray-500">Dec 2015 - 2021 | Grade: <strong>85%</strong></p>
+        <div class="mb-6">
+          <h4 class="text-2xl font-semibold text-green-400 mb-2">Primary Education</h4>
+          <p class="text-lg max-w-3xl mb-1" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">Ghatal Vidyasagar High School</p>
+          <p class="text-sm text-gray-300">Dec 2015 - 2021 | Grade: <strong>85%</strong></p>
         </div>
         <!-- Item 2 -->
-        <div>
-          <h4 class="text-2xl font-semibol text-green-400 mb-4">Secondary Education</h4>
-          <p class="text-lg max-w-3xl mb-2" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">Ghatal Vidyasagar High School</p>
-          <p class="text-sm text-gray-500">Feb 2021 - Mar 2022 | Grade: <strong>88.85%</strong></p>
+        <div class="mb-6">
+          <h4 class="text-2xl font-semibold text-green-400 mb-2">Secondary Education</h4>
+          <p class="text-lg max-w-3xl mb-1" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">Ghatal Vidyasagar High School</p>
+          <p class="text-sm text-gray-300">Feb 2021 - Mar 2022 | Grade: <strong>88.85%</strong></p>
         </div>
         <!-- Item 3 -->
-        <div>
-          <h4 class="text-2xl font-semibol text-green-400 mb-4">Higher Secondary</h4>
-          <p class="text-lg max-w-3xl mb-2" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">Ghatal Vidyasagar High School</p>
-          <p class="text-sm text-gray-500">Feb 2022 - Mar 2024 | Grade: <strong>66.68%</strong></p>
+        <div class="mb-6">
+          <h4 class="text-2xl font-semibold text-green-400 mb-2">Higher Secondary</h4>
+          <p class="text-lg max-w-3xl mb-1" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">Ghatal Vidyasagar High School</p>
+          <p class="text-sm text-gray-300">Feb 2022 - Mar 2024 | Grade: <strong>66.68%</strong></p>
         </div>
         <!-- Item 4 -->
         <div>
-          <h4 class="text-2xl font-semibol text-green-400 mb-4">College</h4>
-          <p class="text-lg max-w-3xl mb-2" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">B. P. Poddar Institute of Management & Technology</p>
-          <p class="text-sm text-gray-500">1st Year Result | SGPA: <strong>7.5</strong></p>
+          <h4 class="text-2xl font-semibold text-green-400 mb-2">College</h4>
+          <p class="text-lg max-w-3xl mb-1" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">B. P. Poddar Institute of Management & Technology</p>
+          <p class="text-sm text-gray-300">1st Year Result | SGPA: <strong>7.5</strong></p>
         </div>
       </div>
     </div>
@@ -253,7 +322,7 @@ BIKRAMJIT PAKHIRA
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16 fade-in-up">
       <h2 class="text-5xl font-bold mb-6">Skills & <span class="text-green-500">Technologies</span></h2>
-      <p class="text-1xl font-semibold mb-4 text-gray-600">Technologies and tools I work with</p>
+      <p class="text-1xl font-semibold mb-4 text-gray-400">Technologies and tools I work with</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -261,7 +330,7 @@ BIKRAMJIT PAKHIRA
       <!-- Programming Languages -->
       <div class="bg-white bg-opacity-10 p-6 rounded-xl backdrop-blur-lg text-left shadow-lg">
         <div class="w-12 h-12 flex items-center justify-center bg-blue-600/20 rounded-xl mb-6">
-          <i class="ri-palette-line ri-xl text-primary"></i>
+          <i class="ri-terminal-box-line ri-xl text-primary"></i>
         </div>
         <h3 class="text-xl font-semibold mb-6">Programming Languages</h3>
         <div class="space-y-4">
@@ -270,8 +339,8 @@ BIKRAMJIT PAKHIRA
               <span class="text-sm font-medium">C</span>
               <span class="text-sm text-gray-300">65%</span>
             </div>
-            <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-green-500 h-2 rounded-full" style="width: 65%"></div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-500 h-2 rounded-full skill-bar" style="--skill-width: 65%"></div>
             </div>
           </div>
 
@@ -280,8 +349,8 @@ BIKRAMJIT PAKHIRA
               <span class="text-sm font-medium">Python</span>
               <span class="text-sm text-gray-300">25%</span>
             </div>
-            <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-green-500 h-2 rounded-full" style="width: 25%"></div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-500 h-2 rounded-full skill-bar" style="--skill-width: 25%"></div>
             </div>
           </div>
 
@@ -290,8 +359,8 @@ BIKRAMJIT PAKHIRA
               <span class="text-sm font-medium">JavaScript</span>
               <span class="text-sm text-gray-300">75%</span>
             </div>
-            <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-green-500 h-2 rounded-full" style="width: 75%"></div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-500 h-2 rounded-full skill-bar" style="--skill-width: 75%"></div>
             </div>
           </div>
         </div>
@@ -307,30 +376,30 @@ BIKRAMJIT PAKHIRA
           <div class="skill-item">
             <div class="flex justify-between mb-2">
               <span class="text-sm font-medium">HTML/CSS</span>
-              <span class="text-sm text-gray-500">95%</span>
+              <span class="text-sm text-gray-300">95%</span>
             </div>
-            <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-green-600 h-2 rounded-full" style="width: 95%"></div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-600 h-2 rounded-full skill-bar" style="--skill-width: 95%"></div>
             </div>
           </div>
 
           <div class="skill-item">
             <div class="flex justify-between mb-2">
               <span class="text-sm font-medium">React.js</span>
-              <span class="text-sm text-gray-500">45%</span>
+              <span class="text-sm text-gray-300">45%</span>
             </div>
-            <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-green-600 h-2 rounded-full" style="width: 45%"></div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-600 h-2 rounded-full skill-bar" style="--skill-width: 45%"></div>
             </div>
           </div>
 
           <div class="skill-item">
             <div class="flex justify-between mb-2">
               <span class="text-sm font-medium">Node.js</span>
-              <span class="text-sm text-gray-500">25%</span>
+              <span class="text-sm text-gray-300">25%</span>
             </div>
-            <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-green-600 h-2 rounded-full" style="width: 25%"></div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-600 h-2 rounded-full skill-bar" style="--skill-width: 25%"></div>
             </div>
           </div>
         </div>
@@ -346,30 +415,30 @@ BIKRAMJIT PAKHIRA
           <div class="skill-item">
             <div class="flex justify-between mb-2">
               <span class="text-sm font-medium">Figma</span>
-              <span class="text-sm text-gray-500">85%</span>
+              <span class="text-sm text-gray-300">85%</span>
             </div>
-            <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-green-600 h-2 rounded-full" style="width: 85%"></div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-600 h-2 rounded-full skill-bar" style="--skill-width: 85%"></div>
             </div>
           </div>
 
           <div class="skill-item">
             <div class="flex justify-between mb-2">
               <span class="text-sm font-medium">Photoshop</span>
-              <span class="text-sm text-gray-500">70%</span>
+              <span class="text-sm text-gray-300">70%</span>
             </div>
-            <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-green-600 h-2 rounded-full" style="width: 70%"></div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-600 h-2 rounded-full skill-bar" style="--skill-width: 70%"></div>
             </div>
           </div>
 
           <div class="skill-item">
             <div class="flex justify-between mb-2">
               <span class="text-sm font-medium">Canva</span>
-              <span class="text-sm text-gray-500">75%</span>
+              <span class="text-sm text-gray-300">75%</span>
             </div>
-            <div class="w-full bg-gray-200 rounded-full h-2">
-              <div class="bg-green-600 h-2 rounded-full" style="width: 75%"></div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-600 h-2 rounded-full skill-bar" style="--skill-width: 75%"></div>
             </div>
           </div>
         </div>
@@ -383,13 +452,13 @@ BIKRAMJIT PAKHIRA
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="text-center mb-16 fade-in-up">
 <h2 class="text-5xl font-bold mb-6">Featured<span class="text-green-500">Projects</span></h2>
-<p class="text-lg text-gray-600">Some of my recent work and personal projects</p>
+<p class="text-lg text-gray-400">Some of my recent work and personal projects</p>
 </div>
 <div class="mb-8 flex justify-center fade-in-up">
 <div class="bg-white bg-opacity-10 p-2 rounded-xl backdrop-blur-lg text-left shadow-lg">
-<button class="filter-btn active px-8 py-2 rounded-full text-sm font-medium transition-all" data-filter="all">All</button>
-<button class="filter-btn px-8 py-2 rounded-full text-sm font-medium transition-all" data-filter="web">Web</button>
-<button class="filter-btn px-8 py-2 rounded-full text-sm font-medium transition-all" data-filter="design">Design</button>
+<button class="filter-btn active px-8 py-2 rounded-full text-sm font-medium transition-all bg-primary text-white" data-filter="all">All</button>
+<button class="filter-btn px-8 py-2 rounded-full text-sm font-medium transition-all text-gray-600" data-filter="web">Web</button>
+<button class="filter-btn px-8 py-2 rounded-full text-sm font-medium transition-all text-gray-600" data-filter="design">Design</button>
 </div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -573,19 +642,19 @@ KhaabarAdda is an online food platform offering a diverse menu of high-quality d
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="text-center mb-16 fade-in-up">
 <h2 class="text-5xl font-bold mb-6">Get In<span class="text-green-500">Touch</span></h2>
-<p class="text-lg text-gray-600">Let's discuss your next project or collaboration opportunity</p>
+<p class="text-lg text-gray-400">Let's discuss your next project or collaboration opportunity</p>
 </div>
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
 <div class="fade-in-up">
-<h3 class="text-2xl font-semibold mb-6">Contact Information</h3>
+<h3 class="text-2xl font-semibold mb-6 text-white">Contact Information</h3>
 <div class="space-y-6">
 <div class="flex items-center gap-4">
 <div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-xl">
 <i class="ri-mail-line ri-lg text-primary"></i>
 </div>
 <div>
-<h4 class="font-medium">Email</h4>
-<p class="text-gray-500">pakhirab613@email.com</p>
+<h4 class="font-medium text-white">Email</h4>
+<p class="text-gray-400">pakhirab613@email.com</p>
 </div>
 </div>
 <div class="flex items-center gap-4">
@@ -593,8 +662,8 @@ KhaabarAdda is an online food platform offering a diverse menu of high-quality d
 <i class="ri-phone-line ri-lg text-primary"></i>
 </div>
 <div>
-<h4 class="font-medium">Phone</h4>
-<p class="text-gray-500">+91 8348458035</p>
+<h4 class="font-medium text-white">Phone</h4>
+<p class="text-gray-400">+91 8348458035</p>
 </div>
 </div>
 <div class="flex items-center gap-4">
@@ -602,25 +671,25 @@ KhaabarAdda is an online food platform offering a diverse menu of high-quality d
 <i class="ri-map-pin-line ri-lg text-primary"></i>
 </div>
 <div>
-<h4 class="font-medium">Location</h4>
-<p class="text-gray-500">Kolkata, West Bengal, India</p>
+<h4 class="font-medium text-white">Location</h4>
+<p class="text-gray-400">Kolkata, West Bengal, India</p>
 </div>
 </div>
 </div>
 <div class="mt-8">
-<h4 class="font-medium mb-4">Follow Me</h4>
+<h4 class="font-medium mb-4 text-white">Follow Me</h4>
 <div class="flex gap-4">
-<a href="https://github.com/CodewithBikram2025" class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg">
-<i class="ri-github-line"></i>
+<a href="https://github.com/CodewithBikram2025" class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg text-white hover:text-primary transition-colors">
+<i class="ri-github-line text-xl"></i>
 </a>
-<a href="https://www.linkedin.com/in/bikramjit-pakhira-435b7633b" class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg">
-<i class="ri-linkedin-line"></i>
+<a href="https://www.linkedin.com/in/bikramjit-pakhira-435b7633b" class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg text-white hover:text-primary transition-colors">
+<i class="ri-linkedin-line text-xl"></i>
 </a>
-<a href="https://x.com/Bikramjit2028?" class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg">
-<i class="ri-twitter-line"></i>
+<a href="https://x.com/Bikramjit2028?" class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg text-white hover:text-primary transition-colors">
+<i class="ri-twitter-line text-xl"></i>
 </a>
-<a href="https://instagram.com/bikram_20_28" class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg">
-<i class="ri-instagram-line"></i>
+<a href="https://instagram.com/bikram_20_28" class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg text-white hover:text-primary transition-colors">
+<i class="ri-instagram-line text-xl"></i>
 </a>
 </div>
 </div>
@@ -628,20 +697,20 @@ KhaabarAdda is an online food platform offering a diverse menu of high-quality d
 <div class="fade-in-up">
 <form id="contact-form" class="space-y-6">
 <div>
-<label for="name" class="block text-sm font-medium text-gray-500 mb-2">Name</label>
-<input type="text" id="name" name="name" required class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg">
+<label for="name" class="block text-sm font-medium text-gray-400 mb-2">Name</label>
+<input type="text" id="name" name="name" required class="w-full bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-white placeholder-gray-400 shadow-lg border border-transparent focus:border-primary focus:ring-primary focus:outline-none transition-all">
 </div>
 <div>
-<label for="email" class="block text-sm font-medium text-gray-500 mb-2">Email</label>
-<input type="email" id="email" name="email" required class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg">
+<label for="email" class="block text-sm font-medium text-gray-400 mb-2">Email</label>
+<input type="email" id="email" name="email" required class="w-full bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-white placeholder-gray-400 shadow-lg border border-transparent focus:border-primary focus:ring-primary focus:outline-none transition-all">
 </div>
 <div>
-<label for="subject" class="block text-sm font-medium text-gray-500 mb-2">Subject</label>
-<input type="text" id="subject" name="subject" required class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg">
+<label for="subject" class="block text-sm font-medium text-gray-400 mb-2">Subject</label>
+<input type="text" id="subject" name="subject" required class="w-full bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-white placeholder-gray-400 shadow-lg border border-transparent focus:border-primary focus:ring-primary focus:outline-none transition-all">
 </div>
 <div>
-<label for="message" class="block text-sm font-medium text-gray-500 mb-2">Message</label>
-<textarea id="message" name="message" rows="5" required class="bg-white bg-opacity-10 p-6 rounded-xl backdrop-blur-lg text-left shadow-lg resize-none"></textarea>
+<label for="message" class="block text-sm font-medium text-gray-400 mb-2">Message</label>
+<textarea id="message" name="message" rows="5" required class="w-full bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-white placeholder-gray-400 shadow-lg resize-none border border-transparent focus:border-primary focus:ring-primary focus:outline-none transition-all"></textarea>
 </div>
 <button type="submit" class="w-full bg-primary hover:bg-secondary text-white py-3 px-6 !rounded-button font-medium transition-all duration-300 transform hover:scale-105 whitespace-nowrap">
 Send Message
@@ -659,8 +728,8 @@ Send Message
   </div>
 </footer>
 
-<button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 bg-primary hover:bg-secondary text-white rounded-full shadow-lg opacity-0 invisible transition-all duration-300 z-50">
-<i class="ri-arrow-up-line"></i>
+<button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 bg-primary hover:bg-secondary text-white rounded-full shadow-lg opacity-0 invisible transition-all duration-300 z-50 flex items-center justify-center">
+<i class="ri-arrow-up-line text-xl"></i>
 </button>
 <script id="typing-animation">
 document.addEventListener('DOMContentLoaded', function() {
@@ -696,19 +765,28 @@ type();
 document.addEventListener('DOMContentLoaded', function() {
 const mobileMenuBtn = document.getElementById('mobile-menu-btn');
 const mobileMenu = document.getElementById('mobile-menu');
+const mobileMenuCloseBtn = document.getElementById('mobile-menu-close-btn'); // New close button
+
 mobileMenuBtn.addEventListener('click', function() {
-mobileMenu.classList.toggle('open');
+  mobileMenu.classList.add('open');
 });
+
+mobileMenuCloseBtn.addEventListener('click', function() { // Event listener for new close button
+  mobileMenu.classList.remove('open');
+});
+
+// Close menu when clicking outside (still good to have)
 document.addEventListener('click', function(e) {
-if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
-mobileMenu.classList.remove('open');
-}
+  if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+    mobileMenu.classList.remove('open');
+  }
 });
+
 const mobileLinks = mobileMenu.querySelectorAll('a');
 mobileLinks.forEach(link => {
-link.addEventListener('click', function() {
-mobileMenu.classList.remove('open');
-});
+  link.addEventListener('click', function() {
+    mobileMenu.classList.remove('open');
+  });
 });
 });
 </script>
@@ -725,16 +803,44 @@ entry.target.classList.add('visible');
 if (entry.target.closest('#skills')) {
 const skillBars = entry.target.querySelectorAll('.skill-bar');
 skillBars.forEach(bar => {
+// Use a small delay for each bar to create a staggered effect
 setTimeout(() => {
 bar.classList.add('animate');
-}, 300);
+}, parseInt(bar.dataset.delay || 0)); // Allows for custom delays if needed
 });
 }
+} else {
+  // Optional: remove visible class when out of view for re-triggering animation on scroll back up
+  // entry.target.classList.remove('visible'); 
+  // For skill bars, reset width to 0 if you want them to animate every time you scroll past
+  // if (entry.target.closest('#skills')) {
+  //   const skillBars = entry.target.querySelectorAll('.skill-bar');
+  //   skillBars.forEach(bar => {
+  //     bar.classList.remove('animate');
+  //   });
+  // }
 }
 });
 }, observerOptions);
 const fadeElements = document.querySelectorAll('.fade-in-up');
 fadeElements.forEach(el => observer.observe(el));
+
+// Observe skill items to trigger animation
+const skillObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.skill-bar').forEach(bar => {
+        bar.classList.add('animate');
+      });
+      skillObserver.unobserve(entry.target); // Stop observing once animated
+    }
+  });
+}, { threshold: 0.5 }); // Trigger when 50% of the section is visible
+
+document.querySelectorAll('#skills .bg-white.bg-opacity-10').forEach(section => {
+  skillObserver.observe(section);
+});
+
 });
 </script>
 <script id="project-filter">
@@ -767,7 +873,8 @@ card.style.display = 'none';
 });
 });
 });
-filterBtns[0].classList.add('active', 'bg-primary', 'text-white');
+// Initial active state for 'All' button, already handled by HTML
+// filterBtns[0].classList.add('active', 'bg-primary', 'text-white');
 });
 </script>
 <script id="contact-form-handler">
@@ -816,7 +923,6 @@ function playAudio() {
 </script>
 </body>
 </html>
-
 
 
 
