@@ -1,1 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>bpportfolio.com</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<script>
+tailwind.config = {
+theme: {
+extend: {
+colors: {
+primary: '#33ec0a',
+secondary: '#1e40af'
+},
+borderRadius: {
+'none': '0px',
+'sm': '4px',
+DEFAULT: '8px',
+'md': '12px',
+'lg': '16px',
+'xl': '20px',
+'2xl': '24px',
+'3xl': '32px',
+'full': '9999px',
+'button': '8px'
+},
+fontFamily: {
+'inter': ['Inter', 'sans-serif']
+}
+}
+}
+}
+</script>
+<style>
+:where([class^="ri-"])::before {
+content: "\f3c2";
+}
+body {
+font-family: 'Inter', sans-serif;
+}
+.typing-animation {
+border-right: 2px solid #33ec0a;
+animation: blink 1s infinite;
+}
+@keyframes blink {
+0%, 50% { border-color: transparent; }
+51%, 100% { border-color: #33ec0a; }
+}
+.fade-in-up {
+opacity: 0;
+transform: translateY(30px);
+transition: all 0.6s ease-out;
+}
+.fade-in-up.visible {
+opacity: 1;
+transform: translateY(0);
+}
+.skill-bar {
+width: 0%;
+transition: width 2s ease-in-out;
+}
+.skill-bar.animate {
+width: var(--skill-width);
+}
+.project-card {
+transition: all 0.3s ease;
+}
+.project-card:hover {
+transform: translateY(-8px);
+}
 
+html {
+scroll-behavior: smooth;
+}
+.gradient-bg {
+background: linear-gradient(135deg, #667eee 0%, #764ba2 100%);
+}
+.glass-effect {
+backdrop-filter: blur(10px);
+background: rgba(255, 255, 255, 0.1);
+}
+/* Header/Navbar specific styles */
+.header-glass {
+    background: rgba(255, 255, 255, 0.15); /* Lighter glass effect for header */
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+.nav-link {
+    position: relative;
+    padding: 0.5rem 0;
+}
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: #33ec0a;
+    transition: all 0.3s ease-out;
+    transform: translateX(-50%);
+}
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
+}
+
+/* Sidebar Specific Styles */
+.sidebar-closed {
+    transform: translateX(100%); /* Start hidden off-screen */
+    opacity: 0;
+    pointer-events: none;
+}
+.sidebar-open {
+    transform: translateX(0); /* Slide into view */
+    opacity: 1;
+    pointer-events: auto;
+}
+.sidebar {
+    background: rgba(0, 0, 0, 0.85); /* Darker glass for contrast */
+    backdrop-filter: blur(15px); /* Strong blur */
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease; /* Smooth transition */
+}
+@media (min-width: 768px) {
+  .menu-icon { display: none !important; }
+  .sidebar { display: none !important; } /* Hide sidebar on desktop */
+}
+</style>
+</head>
+<body class="relative z-10 text-gray-800">
+  <!-- FULL‑PAGE BACKGROUND VIDEO -->
+  <video autoplay muted loop playsinline class="fixed top-0 left-0 w-full h-full object-cover -z-10">
+    <source src="sky1.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+<audio id="background-audio" autoplay loop>
+  <source src="song.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<!-- Hamburger Icon for Mobile -->
+<div class="menu-icon fixed top-4 right-4 z-[100] md:hidden bg-white rounded-full shadow-lg p-2 cursor-pointer">
+  <i class="ri-menu-line ri-1x text-primary"></i>
+</div>
+
+<!-- Sidebar -->
+<aside id="sidebar" class="fixed top-0 right-0 h-full w-full max-w-xs sidebar z-[100] overflow-hidden shadow-2xl flex flex-col justify-between sidebar-closed">
+  <div>
+    <!-- Close Icon -->
+    <div class="close-icon flex justify-end p-6 cursor-pointer">
+      <i class="ri-close-line ri-2x text-gray-400 hover:text-white transition-colors"></i>
+    </div>
+    <!-- Nav Links -->
+    <nav class="flex flex-col space-y-8 px-8 mt-10">
+      <a href="#home"      class="text-2xl font-bold text-white hover:text-primary transition-all">Home</a>
+      <a href="#about%20me" class="text-2xl font-bold text-white hover:text-primary transition-all">About Me</a>
+      <a href="#skills"    class="text-2xl font-bold text-white hover:text-primary transition-all">Skills</a>
+      <a href="#projects"  class="text-2xl font-bold text-white hover:text-primary transition-all">Projects</a>
+      <a href="#contact"   class="text-2xl font-bold text-white hover:text-primary transition-all">Contact</a>
+    </nav>
+  </div>
+</aside>
+
+<header class="fixed top-0 w-full header-glass z-50">
+<nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex justify-between items-center h-16">
+<div class="flex-shrink-0">
+<a href="#home" class="text-2xl font-extrabold text-white bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+  Portfolio.
+</a>
+</div>
+<div class="hidden md:block">
+<div class="ml-10 flex items-baseline space-x-8">
+<a href="#home" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Home</a>
+<a href="#about%20me" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">About Me</a>
+<a href="#skills" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Skills</a>
+<a href="#projects" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Projects</a>
+<a href="#contact" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Contact</a>
+</div>
+</div>
+<!-- The mobile menu button (<div class="md:hidden">...</div>) is removed from here -->
+</div>
+</nav>
+</header>
+<div id="audio-control" class="fixed bottom-4 right-4 z-50">
+  <button onclick="playAudio()" class="bg-primary text-white px-4 py-2 rounded-full shadow-lg hover:bg-secondary transition-all">
+    🔊 Play Background Sound
+  </button>
+</div>
+<div class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-60 -z-10"></div>
+<main>
+<section id="home" class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-20 text-white text-center">
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div class="fade-in-up text-left">
+<i><h3>Hi, I am</h3>
+<h1 class="text-2xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+BIKRAMJIT PAKHIRA
+</h1></i>
+<div class="text-xl md:text-2xl mb-4 h-8 text-gray-400">
+<i><span id="typing-text" class="typing-animation"></span></i>
+</div>
+<i><p class="text-lg max-w-3xl mb-10" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">2nd Year BTech student passionate about crafting clean code, creative designs, and building responsive, scalable web solutions that transform ideas into interactive digital experiences.
+</p></i>
+<div class="flex gap-4">
+<button onclick="document.getElementById('projects').scrollIntoView({behavior: 'smooth'})" class="bg-primary hover:bg-secondary text-white px-8 py-3 !rounded-button font-medium transition-all duration-300 transform hover:scale-105 whitespace-nowrap flex items-center gap-2">
+<span>View My Projects</span>
+<i class="ri-arrow-right-line"></i>
+</button>
+<button onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})" class="border-2 border-primary hover:bg-primary text-primary hover:text-white px-8 py-3 !rounded-button font-medium transition-all duration-300 whitespace-nowrap flex items-center gap-2">
+<span>Contact Me</span>
+<i class="ri-send-plane-line"></i>
+</button>
+</div>
+<div class="mt-12 flex items-center gap-6">
+<a href="https://github.com/CodewithBikram2025" class="text-gray-400 hover:text-primary transition-colors">
+<i class="ri-github-fill text-2xl"></i>
+</a>
+<a href="https://www.linkedin.com/in/bikramjit-pakhira-435b7633b" class="text-gray-400 hover:text-primary transition-colors">
+<i class="ri-linkedin-fill text-2xl"></i>
+</a>
+<a href="https://x.com/Bikramjit2028?" class="text-gray-400 hover:text-primary transition-colors">
+<i class="ri-twitter-fill text-2xl"></i>
+</a>
+<a href="https://instagram.com/bikram_20_28" class="text-gray-400 hover:text-primary transition-colors">
+<i class="ri-instagram-fill text-2xl"></i>
+</a>
+</div>
+</div>
+<div class="fade-in-up relative">
+<div class="relative w-full aspect-square rounded-full overflow-hidden border-8 border-white shadow-2xl transform hover:scale-105 transition-transform duration-300" style="background-image: url('pic.jpg'); background-size: cover; background-position: center;">
+<div class="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent"></div>
+</div>
+<div class="absolute -bottom-4 -right-4 w-24 h-24 bg-primary rounded-full flex items-center justify-center text-white text-sm font-medium">
+<div class="text-center">
+<div class="font-bold">1.5+ Years</div>
+<div class="text-xs">Experience</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="about%20me" class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-20 text-white text-center">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16 fade-in-up">
+      <h2 class="text-5xl font-bold mb-6">About <span class="text-green-500">Me</span></h2>
+      <p class="text-lg text-gray-400">Who I am and what I do</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start fade-in-up">
+      <!-- Text Content -->
+      <div>
+        <h3 class="text-2xl font-semibold mb-4 text-white">Who I Am</h3>
+        <i><p class="text-lg max-w-3xl mb-10" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">
+          I’m a passionate 2nd-year college student currently pursuing my degree in Computer Science & Engineering at B. P. Poddar Institute of Management & Technology.
+          I have a strong interest in web development, AI, or cybersecurity, and I love exploring new technologies and building projects that solve real-world problems.
+        </p>
+        <p class="text-lg max-w-3xl mb-10" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">
+          I’m currently focusing on improving my knowledge in areas like front-end development and DSA in C language, and I’m always eager to connect with like-minded individuals and industry professionals.
+        </p></i>
+
+        <a href="Bikramjit resume (3) (1).pdf" download class="inline-block bg-primary text-white px-6 py-3 rounded-button font-medium hover:bg-secondary transition-all">Download Resume</a>
+      </div>
+
+      <!-- Right Column: Timeline -->
+      <div class="bg-white bg-opacity-10 p-6 rounded-xl backdrop-blur-lg text-left shadow-lg">  
+        <!-- Item 1 -->
+        <div class="mb-6">
+          <h4 class="text-2xl font-semibold text-green-400 mb-2">Primary Education</h4>
+          <p class="text-lg max-w-3xl mb-1" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">Ghatal Vidyasagar High School</p>
+          <p class="text-sm text-gray-300">Dec 2015 - 2021 | Grade: <strong>85%</strong></p>
+        </div>
+        <!-- Item 2 -->
+        <div class="mb-6">
+          <h4 class="text-2xl font-semibold text-green-400 mb-2">Secondary Education</h4>
+          <p class="text-lg max-w-3xl mb-1" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">Ghatal Vidyasagar High School</p>
+          <p class="text-sm text-gray-300">Feb 2021 - Mar 2022 | Grade: <strong>88.85%</strong></p>
+        </div>
+        <!-- Item 3 -->
+        <div class="mb-6">
+          <h4 class="text-2xl font-semibold text-green-400 mb-2">Higher Secondary</h4>
+          <p class="text-lg max-w-3xl mb-1" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">Ghatal Vidyasagar High School</p>
+          <p class="text-sm text-gray-300">Feb 2022 - Mar 2024 | Grade: <strong>66.68%</strong></p>
+        </div>
+        <!-- Item 4 -->
+        <div>
+          <h4 class="text-2xl font-semibold text-green-400 mb-2">College</h4>
+          <p class="text-lg max-w-3xl mb-1" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">B. P. Poddar Institute of Management & Technology</p>
+          <p class="text-sm text-gray-300">1st Year Result | SGPA: <strong>7.5</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="skills" class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-20 text-white text-center">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16 fade-in-up">
+      <h2 class="text-5xl font-bold mb-6">Skills & <span class="text-green-500">Technologies</span></h2>
+      <p class="text-1xl font-semibold mb-4 text-gray-400">Technologies and tools I work with</p>
+    </div>
+      
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+      <!-- Programming Languages -->
+      <div class="bg-white bg-opacity-10 p-6 rounded-xl backdrop-blur-lg text-left shadow-lg">
+        <div class="w-12 h-12 flex items-center justify-center bg-blue-600/20 rounded-xl mb-6">
+          <i class="ri-terminal-box-line ri-xl text-primary"></i>
+        </div>
+        <h3 class="text-xl font-semibold mb-6">Programming Languages</h3>
+        <div class="space-y-4">
+          <div class="skill-item">
+            <div class="flex justify-between mb-2">
+              <span class="text-sm font-medium">C</span>
+              <span class="text-sm text-gray-300">65%</span>
+            </div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-500 h-2 rounded-full skill-bar" style="--skill-width: 65%"></div>
+            </div>
+          </div>
+
+          <div class="skill-item">
+            <div class="flex justify-between mb-2">
+              <span class="text-sm font-medium">Python</span>
+              <span class="text-sm text-gray-300">25%</span>
+            </div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-500 h-2 rounded-full skill-bar" style="--skill-width: 25%"></div>
+            </div>
+          </div>
+
+          <div class="skill-item">
+            <div class="flex justify-between mb-2">
+              <span class="text-sm font-medium">JavaScript</span>
+              <span class="text-sm text-gray-300">75%</span>
+            </div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-500 h-2 rounded-full skill-bar" style="--skill-width: 75%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Web Technologies -->
+      <div class="bg-white bg-opacity-10 p-6 rounded-xl backdrop-blur-lg text-left shadow-lg">
+        <div class="w-12 h-12 flex items-center justify-center bg-blue-600/10 rounded-xl mb-6">
+          <i class="ri-global-line ri-xl text-primary"></i>
+        </div>
+        <h3 class="text-xl font-semibold mb-6">Web Technologies</h3>
+        <div class="space-y-4">
+          <div class="skill-item">
+            <div class="flex justify-between mb-2">
+              <span class="text-sm font-medium">HTML/CSS</span>
+              <span class="text-sm text-gray-300">95%</span>
+            </div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-600 h-2 rounded-full skill-bar" style="--skill-width: 95%"></div>
+            </div>
+          </div>
+
+          <div class="skill-item">
+            <div class="flex justify-between mb-2">
+              <span class="text-sm font-medium">React.js</span>
+              <span class="text-sm text-gray-300">45%</span>
+            </div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-600 h-2 rounded-full skill-bar" style="--skill-width: 45%"></div>
+            </div>
+          </div>
+
+          <div class="skill-item">
+            <div class="flex justify-between mb-2">
+              <span class="text-sm font-medium">Node.js</span>
+              <span class="text-sm text-gray-300">25%</span>
+            </div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-600 h-2 rounded-full skill-bar" style="--skill-width: 25%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Design Tools -->
+      <div class="bg-white bg-opacity-10 p-6 rounded-xl backdrop-blur-lg text-left shadow-lg">
+        <div class="w-12 h-12 flex items-center justify-center bg-blue-600/10 rounded-xl mb-6">
+          <i class="ri-palette-line ri-xl text-primary"></i>
+        </div>
+        <h3 class="text-xl font-semibold mb-6">Design Tools</h3>
+        <div class="space-y-4">
+          <div class="skill-item">
+            <div class="flex justify-between mb-2">
+              <span class="text-sm font-medium">Figma</span>
+              <span class="text-sm text-gray-300">85%</span>
+            </div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-600 h-2 rounded-full skill-bar" style="--skill-width: 85%"></div>
+            </div>
+          </div>
+
+          <div class="skill-item">
+            <div class="flex justify-between mb-2">
+              <span class="text-sm font-medium">Photoshop</span>
+              <span class="text-sm text-gray-300">70%</span>
+            </div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-600 h-2 rounded-full skill-bar" style="--skill-width: 70%"></div>
+            </div>
+          </div>
+
+          <div class="skill-item">
+            <div class="flex justify-between mb-2">
+              <span class="text-sm font-medium">Canva</span>
+              <span class="text-sm text-gray-300">75%</span>
+            </div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+              <div class="bg-green-600 h-2 rounded-full skill-bar" style="--skill-width: 75%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-20 text-white text-center">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16 fade-in-up">
+<h2 class="text-5xl font-bold mb-6">Featured<span class="text-green-500">Projects</span></h2>
+<p class="text-lg text-gray-400">Some of my recent work and personal projects</p>
+</div>
+<div class="mb-8 flex justify-center fade-in-up">
+<div class="bg-white bg-opacity-10 p-2 rounded-xl backdrop-blur-lg text-left shadow-lg">
+<button class="filter-btn active px-8 py-2 rounded-full text-sm font-medium transition-all bg-primary text-white" data-filter="all">All</button>
+<button class="filter-btn px-8 py-2 rounded-full text-sm font-medium transition-all text-gray-600" data-filter="web">Web</button>
+<button class="filter-btn px-8 py-2 rounded-full text-sm font-medium transition-all text-gray-600" data-filter="design">Design</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<div class="project-card bg-white bg-opacity-10 p-0 rounded-xl overflow-hidden backdrop-blur-lg text-left shadow-lg" data-category="web">
+<div class="h-48 bg-cover bg-center" style="background-image: url('pic1.png')"></div>
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">Healthmate App</h3>
+<p class="text-gray-400 mb-4">🩺 Welcome to HealthMate 2025
+Your personal guide to better health. HealthMate 2025 helps you track your fitness, monitor your health stats, and stay informed with the latest wellness tips. Start your journey toward a healthier you — one step at a time.</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">HTML</span>
+<span class="px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">CSS</span>
+<span class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">JavaScript</span>
+</div>
+<div class="flex gap-3">
+<a href="https://healthmate2025.ct.ws" target="_blank" 
+   class="flex items-center gap-2 text-primary hover:text-secondary transition-colors">
+  <i class="ri-external-link-line"></i>
+  <span class="text-sm">Live Demo</span>
+</a>
+</div>
+</div>
+</div>
+<div class="project-card bg-white bg-opacity-10 p-0 rounded-xl overflow-hidden backdrop-blur-lg text-left shadow-lg" data-category="web">
+<div class="h-48 bg-cover bg-center" style="background-image: url('pic2.png')"></div>
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">Sitara.ai</h3>
+<p class="text-gray-400 mb-4">Sitaraai is a smart AI-powered platform built to assist, create, and explore. From answering questions to generating ideas, Sitaraai helps you work smarter and faster using the power of artificial intelligence.</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">HTML</span>
+<span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">CSS</span>
+<span class="px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">JavaScript</span>
+</div>
+<div class="flex gap-3">
+<a href="https://sitara-ai-rh58.vercel.app/" target="_blank" 
+   class="flex items-center gap-2 text-primary hover:text-secondary transition-colors">
+  <i class="ri-external-link-line"></i>
+  <span class="text-sm">Live Demo</span>
+</a>
+</div>
+</div>
+</div>
+<div class="project-card bg-white bg-opacity-10 p-0 rounded-xl overflow-hidden backdrop-blur-lg text-left shadow-lg" data-category="web">
+<div class="h-48 bg-cover bg-center" style="background-image: url('pic3.png')"></div>
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">Portfolio Website</h3>
+<p class="text-gray-400 mb-4">Design a personal portfolio website for a frontend developer built with modern web technologies. Use Tailwind CSS, include a hero section with name, title, and profile image, a skills section with progress bars, and a projects section with live demo buttons. Make it responsive and use smooth scroll and fade-in animations.</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="px-3 py-1 bg-orange-100 text-orange-800 text-xs rounded-full">HTML/CSS</span>
+<span class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">JavaScript</span>
+<span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Tailwind</span>
+</div>
+<div class="flex gap-3">
+<a href="https://codewithbikram2025.github.io/portfolio_2025/" target="_blank" 
+   class="flex items-center gap-2 text-primary hover:text-secondary transition-colors">
+  <i class="ri-external-link-line"></i>
+  <span class="text-sm">Live Demo</span>
+</a>
+</div>
+</div>
+</div>
+<div class="project-card bg-white bg-opacity-10 p-0 rounded-xl overflow-hidden backdrop-blur-lg text-left shadow-lg" data-category="web">
+<div class="h-48 bg-cover bg-center" style="background-image: url('pic5.png')"></div>
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">Flatfinder</h3>
+<p class="text-gray-400 mb-4">FlatFinder is your trusted property search platform dedicated to flats and homes across Kolkata. Whether you're looking to rent or buy, we offer only verified and affordable listings to make your housing journey smooth, reliable, and stress-free.</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="px-3 py-1 bg-pink-100 text-pink-800 text-xs rounded-full">HTML</span>
+<span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">CSS</span>
+<span class="px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">JavaScript</span>
+</div>
+<div class="flex gap-3">
+<a href="https://flatfinder.me" target="_blank" 
+   class="flex items-center gap-2 text-primary hover:text-secondary transition-colors">
+  <i class="ri-external-link-line"></i>
+  <span class="text-sm">Live Demo</span>
+</a>
+</div>
+</div>
+</div>
+<div class="project-card bg-white bg-opacity-10 p-0 rounded-xl overflow-hidden backdrop-blur-lg text-left shadow-lg" data-category="web">
+<div class="h-48 bg-cover bg-center" style="background-image: url('pic6.png')"></div>
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">Neon Calculator</h3>
+<p class="text-gray-400 mb-4">Neon Calculator is a stylish and easy-to-use web calculator built with HTML, CSS (TailwindCSS), and JavaScript. It performs basic math operations and features a modern glassmorphism design with smooth animations, perfect for both desktop and mobile use.</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">HTML</span>
+<span class="px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">CSS</span>
+<span class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">javascript</span>
+</div>
+<div class="flex gap-3">
+<a href="https://codewithbikram2025.github.io/neoncalculator/" target="_blank" 
+   class="flex items-center gap-2 text-primary hover:text-secondary transition-colors">
+  <i class="ri-external-link-line"></i>
+  <span class="text-sm">Live Demo</span>
+</a>
+</div>
+</div>
+</div>
+<div class="project-card bg-white bg-opacity-10 p-0 rounded-xl overflow-hidden backdrop-blur-lg text-left shadow-lg" data-category="web">
+<div class="h-48 bg-cover bg-center" style="background-image: url('pic4.jpg')"></div>
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">Khaabaradda Restrurent</h3>
+<p class="text-gray-400 mb-4">KhaabarAdda – Taste That Speaks for Itself
+KhaabarAdda is an online food platform offering a diverse menu of high-quality dishes. Our goal is to deliver fresh, flavorful meals quickly and conveniently to our customers.</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">HTML</span>
+<span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">CSS</span>
+<span class="px-3 py-1 bg-orange-100 text-orange-800 text-xs rounded-full">JavaScript</span>
+</div>
+<div class="flex gap-3">
+<a href="https://khaabaradda.free.nf" target="_blank" 
+   class="flex items-center gap-2 text-primary hover:text-secondary transition-colors">
+  <i class="ri-external-link-line"></i>
+  <span class="text-sm">Live Demo</span>
+</a>
+</div>
+</div>
+</div>
+<div class="project-card bg-white bg-opacity-10 p-0 rounded-xl overflow-hidden backdrop-blur-lg text-left shadow-lg" data-category="web">
+<div class="h-48 bg-cover bg-center" style="background-image: url('pic7.png')"></div>
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">Tony Ai Assistant</h3>
+<p class="text-gray-400 mb-4">Tony Ai is a your intelligent companion for everyday tasks. Effortlessly manage schedules, set reminders, draft messages, and get real-time answers—all through intuitive voice or text commands. Designed to boost productivity and simplify your life, our AI assistant is always ready to assist.</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">HTML</span>
+<span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">CSS</span>
+<span class="px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">JavaScript</span>
+</div>
+<div class="flex gap-3">
+<a href="https://codewithbikram2025.github.io/Tony-Ai-Virtual-Assistant/" target="_blank" 
+   class="flex items-center gap-2 text-primary hover:text-secondary transition-colors">
+  <i class="ri-external-link-line"></i>
+  <span class="text-sm">Live Demo</span>
+</a>
+</div>
+</div>
+</div>
+<div class="project-card bg-white bg-opacity-10 p-0 rounded-xl overflow-hidden backdrop-blur-lg text-left shadow-lg" data-category="web">
+<div class="h-48 bg-cover bg-center" style="background-image: url('pic8.png')"></div>
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">WeatherPro</h3>
+<p class="text-gray-400 mb-4">WeatherPro – A real-time weather website built with HTML, CSS, and Vanilla JavaScript, providing accurate updates with a clean and responsive UI.</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">HTML</span>
+<span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">CSS</span>
+<span class="px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">Vanilla JavaScript</span>
+</div>
+<div class="flex gap-3">
+<a href="https://codewithbikram2025.github.io/WeatherPro/" target="_blank" 
+   class="flex items-center gap-2 text-primary hover:text-secondary transition-colors">
+  <i class="ri-external-link-line"></i>
+  <span class="text-sm">Live Demo</span>
+</a>
+</div>
+</div>
+</div>
+<div class="project-card bg-white bg-opacity-10 p-0 rounded-xl overflow-hidden backdrop-blur-lg text-left shadow-lg" data-category="web">
+<div class="h-48 bg-cover bg-center" style="background-image: url('pic9.png')"></div>
+<div class="p-6">
+<h3 class="text-xl font-semibold mb-2">HACKER'S TODO LIST</h3>
+<p class="text-gray-400 mb-4">HACKER'S TODO LIST – A minimalist, command-line–style task manager for hackers and coders. Organize your projects and daily tasks with sleek, terminal-inspired aesthetics—where productivity meets the hacker spirit.</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">HTML</span>
+<span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">Tailwind CSS</span>
+<span class="px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">JavaScript</span>
+</div>
+<div class="flex gap-3">
+<a href="https://hacker-s-todo-list.vercel.app/" target="_blank" 
+   class="flex items-center gap-2 text-primary hover:text-secondary transition-colors">
+  <i class="ri-external-link-line"></i>
+  <span class="text-sm">Live Demo</span>
+</a>
+</div>
+</div>
+</div>  
+</div>
+</div>  
+</section>
+<section id="contact" class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-20 text-white text-center">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16 fade-in-up">
+<h2 class="text-5xl font-bold mb-6">Get In<span class="text-green-500">Touch</span></h2>
+<p class="text-lg text-gray-400">Let's discuss your next project or collaboration opportunity</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+<div class="fade-in-up">
+<h3 class="text-2xl font-semibold mb-6 text-white">Contact Information</h3>
+<div class="space-y-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-xl">
+<i class="ri-mail-line ri-lg text-primary"></i>
+</div>
+<div>
+<h4 class="font-medium text-white">Email</h4>
+<p class="text-gray-400">pakhirab613@email.com</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-xl">
+<i class="ri-phone-line ri-lg text-primary"></i>
+</div>
+<div>
+<h4 class="font-medium text-white">Phone</h4>
+<p class="text-gray-400">+91 8348458035</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-xl">
+<i class="ri-map-pin-line ri-lg text-primary"></i>
+</div>
+<div>
+<h4 class="font-medium text-white">Location</h4>
+<p class="text-gray-400">Kolkata, West Bengal, India</p>
+</div>
+</div>
+</div>
+<div class="mt-8">
+<h4 class="font-medium mb-4 text-white">Follow Me</h4>
+<div class="flex gap-4">
+<a href="https://github.com/CodewithBikram2025" target="_blank" class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg text-white hover:text-primary transition-colors">
+<i class="ri-github-fill text-xl"></i>
+</a>
+<a href="https://www.linkedin.com/in/bikramjit-pakhira-435b7633b" target="_blank" class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg text-white hover:text-primary transition-colors">
+<i class="ri-linkedin-fill text-xl"></i>
+</a>
+<a href="https://x.com/Bikramjit2028?" target="_blank" class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg text-white hover:text-primary transition-colors">
+<i class="ri-twitter-fill text-xl"></i>
+</a>
+<a href="https://instagram.com/bikram_20_28" target="_blank" class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg text-white hover:text-primary transition-colors">
+<i class="ri-instagram-fill text-xl"></i>
+</a>
+</div>
+</div>
+</div>
+<div class="fade-in-up">
+<form id="contact-form" class="space-y-6">
+<div>
+<label for="name" class="block text-sm font-medium text-gray-400 mb-2">Name</label>
+<input type="text" id="name" name="name" required class="w-full bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-white placeholder-gray-400 shadow-lg border border-transparent focus:border-primary focus:ring-primary focus:outline-none transition-all">
+</div>
+<div>
+<label for="email" class="block text-sm font-medium text-gray-400 mb-2">Email</label>
+<input type="email" id="email" name="email" required class="w-full bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-white placeholder-gray-400 shadow-lg border border-transparent focus:border-primary focus:ring-primary focus:outline-none transition-all">
+</div>
+<div>
+<label for="subject" class="block text-sm font-medium text-gray-400 mb-2">Subject</label>
+<input type="text" id="subject" name="subject" required class="w-full bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-white placeholder-gray-400 shadow-lg border border-transparent focus:border-primary focus:ring-primary focus:outline-none transition-all">
+</div>
+<div>
+<label for="message" class="block text-sm font-medium text-gray-400 mb-2">Message</label>
+<textarea id="message" name="message" rows="5" required class="w-full bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-white placeholder-gray-400 shadow-lg resize-none border border-transparent focus:border-primary focus:ring-primary focus:outline-none transition-all"></textarea>
+</div>
+<button type="submit" class="w-full bg-primary hover:bg-secondary text-white py-3 px-6 !rounded-button font-medium transition-all duration-300 transform hover:scale-105 whitespace-nowrap">
+Send Message
+</button>
+</form>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="bg-gray-900 text-white py-6">
+  <div class="max-w-6xl mx-auto px-4 text-center">
+    <p class="text-gray-400">&copy; 2025 Portfolio created by Bikramjit Pakhira. All rights reserved.</p>
+  </div>
+</footer>
+
+<button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 bg-primary hover:bg-secondary text-white rounded-full shadow-lg opacity-0 invisible transition-all duration-300 z-50 flex items-center justify-center">
+<i class="ri-arrow-up-line text-xl"></i>
+</button>
+<script id="typing-animation">
+document.addEventListener('DOMContentLoaded', function() {
+const roles = ['Coder', 'Designer', 'Programmer', 'Web Developer'];
+const typingElement = document.getElementById('typing-text');
+let roleIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+function type() {
+const currentRole = roles[roleIndex];
+if (isDeleting) {
+typingElement.textContent = currentRole.substring(0, charIndex - 1);
+charIndex--;
+} else {
+typingElement.textContent = currentRole.substring(0, charIndex + 1);
+charIndex++;
+}
+let typeSpeed = isDeleting ? 100 : 150;
+if (!isDeleting && charIndex === currentRole.length) {
+typeSpeed = 2000;
+isDeleting = true;
+} else if (isDeleting && charIndex === 0) {
+isDeleting = false;
+roleIndex = (roleIndex + 1) % roles.length;
+typeSpeed = 500;
+}
+setTimeout(type, typeSpeed);
+}
+type();
+});
+</script>
+<script id="mobile-menu-toggle">
+document.addEventListener('DOMContentLoaded', function() {
+  const menuIcon = document.querySelector('.menu-icon');
+  const sidebar = document.getElementById('sidebar');
+  const closeIcon = sidebar.querySelector('.close-icon');
+  const links = sidebar.querySelectorAll('nav a');
+
+  // Open sidebar
+  menuIcon.addEventListener('click', () => {
+    sidebar.classList.remove('sidebar-closed');
+    sidebar.classList.add('sidebar-open');
+  });
+
+  // Close sidebar
+  closeIcon.addEventListener('click', () => {
+    sidebar.classList.remove('sidebar-open');
+    sidebar.classList.add('sidebar-closed');
+  });
+
+  // Close on link click
+  links.forEach(link => {
+    link.addEventListener('click', () => {
+      sidebar.classList.remove('sidebar-open');
+      sidebar.classList.add('sidebar-closed');
+    });
+  });
+
+  // Optional: click outside closes sidebar
+  document.addEventListener('click', (e) => {
+    if (!sidebar.contains(e.target) && !menuIcon.contains(e.target)) {
+      sidebar.classList.remove('sidebar-open');
+      sidebar.classList.add('sidebar-closed');
+    }
+  });
+});
+</script>
+<script id="scroll-animations">
+document.addEventListener('DOMContentLoaded', function() {
+const observerOptions = {
+threshold: 0.1,
+rootMargin: '0px 0px -50px 0px'
+};
+const observer = new IntersectionObserver(function(entries) {
+entries.forEach(entry => {
+if (entry.isIntersecting) {
+entry.target.classList.add('visible');
+if (entry.target.closest('#skills')) {
+const skillBars = entry.target.querySelectorAll('.skill-bar');
+skillBars.forEach(bar => {
+// Use a small delay for each bar to create a staggered effect
+setTimeout(() => {
+bar.classList.add('animate');
+}, parseInt(bar.dataset.delay || 0)); // Allows for custom delays if needed
+});
+}
+} else {
+  // Optional: remove visible class when out of view for re-triggering animation on scroll back up
+  // entry.target.classList.remove('visible'); 
+  // For skill bars, reset width to 0 if you want them to animate every time you scroll past
+  // if (entry.target.closest('#skills')) {
+  //   const skillBars = entry.target.querySelectorAll('.skill-bar');
+  //   skillBars.forEach(bar => {
+  //     bar.classList.remove('animate');
+  //   });
+  // }
+}
+});
+}, observerOptions);
+const fadeElements = document.querySelectorAll('.fade-in-up');
+fadeElements.forEach(el => observer.observe(el));
+
+// Observe skill items to trigger animation
+const skillObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.skill-bar').forEach(bar => {
+        bar.classList.add('animate');
+      });
+      skillObserver.unobserve(entry.target); // Stop observing once animated
+    }
+  });
+}, { threshold: 0.5 }); // Trigger when 50% of the section is visible
+
+document.querySelectorAll('#skills .bg-white.bg-opacity-10').forEach(section => {
+  skillObserver.observe(section);
+});
+
+});
+</script>
+<script id="project-filter">
+document.addEventListener('DOMContentLoaded', function() {
+const filterBtns = document.querySelectorAll('.filter-btn');
+const projectCards = document.querySelectorAll('.project-card');
+filterBtns.forEach(btn => {
+btn.addEventListener('click', function() {
+const filter = this.getAttribute('data-filter');
+filterBtns.forEach(b => {
+b.classList.remove('active', 'bg-primary', 'text-white');
+b.classList.add('text-gray-600');
+});
+this.classList.add('active', 'bg-primary', 'text-white');
+this.classList.remove('text-gray-600');
+projectCards.forEach(card => {
+if (filter === 'all' || card.getAttribute('data-category') === filter) {
+card.style.display = 'block';
+setTimeout(() => {
+card.style.opacity = '1';
+card.style.transform = 'translateY(0)';
+}, 100);
+} else {
+card.style.opacity = '0';
+card.style.transform = 'translateY(20px)';
+setTimeout(() => {
+card.style.display = 'none';
+}, 300);
+}
+});
+});
+});
+// Initial active state for 'All' button, already handled by HTML
+// filterBtns[0].classList.add('active', 'bg-primary', 'text-white');
+});
+</script>
+<script id="contact-form-handler">
+document.addEventListener('DOMContentLoaded', function() {
+const contactForm = document.getElementById('contact-form');
+contactForm.addEventListener('submit', function(e) {
+e.preventDefault();
+const formData = new FormData(this);
+const submitBtn = this.querySelector('button[type="submit"]');
+const originalText = submitBtn.textContent;
+submitBtn.textContent = 'Sending...';
+submitBtn.disabled = true;
+setTimeout(() => {
+alert('Thank you for your message! I\'ll get back to you soon.');
+this.reset();
+submitBtn.textContent = originalText;
+submitBtn.disabled = false;
+}, 1500);
+});
+});
+</script>
+<script id="back-to-top-functionality">
+document.addEventListener('DOMContentLoaded', function() {
+const backToTopBtn = document.getElementById('back-to-top');
+window.addEventListener('scroll', function() {
+if (window.pageYOffset > 300) {
+backToTopBtn.classList.remove('opacity-0', 'invisible');
+backToTopBtn.classList.add('opacity-100', 'visible');
+} else {
+backToTopBtn.classList.add('opacity-0', 'invisible');
+backToTopBtn.classList.remove('opacity-100', 'visible');
+}
+});
+backToTopBtn.addEventListener('click', function() {
+window.scrollTo({
+top: 0,
+behavior: 'smooth'
+});
+});
+});
+function playAudio() {
+  const audio = document.getElementById('background-audio');
+  audio.play();
+  document.getElementById('audio-control').style.display = 'none'; // Hide button after play
+}
+</script>
+</body>
+</html>
