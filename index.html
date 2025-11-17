@@ -73,48 +73,6 @@ transition: all 0.3s ease;
 .project-card:hover {
 transform: translateY(-8px);
 }
-/* New mobile menu styles */
-.mobile-menu {
-  position: fixed;
-  top: 0; /* Changed from 16 to 0 to cover full height */
-  right: 0;
-  width: 100%; /* Full width on mobile */
-  max-width: 300px; /* Max width for larger screens */
-  height: 100%;
-  background: rgba(255, 255, 255, 0.9); /* Slightly more opaque for readability */
-  backdrop-filter: blur(15px); /* Stronger blur for glass effect */
-  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2);
-  transform: translateX(100%);
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother animation */
-  z-index: 100; /* Ensure it's above other content */
-  display: flex; /* Use flexbox for vertical centering/spacing */
-  flex-direction: column;
-  justify-content: center; /* Center items vertically */
-  padding: 2rem;
-}
-
-.mobile-menu.open {
-  transform: translateX(0);
-}
-
-.mobile-menu a {
-  padding: 1rem 0;
-  text-align: center;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #333;
-  transition: color 0.3s ease, background-color 0.3s ease;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* Subtle separator */
-}
-
-.mobile-menu a:last-child {
-  border-bottom: none;
-}
-
-.mobile-menu a:hover {
-  color: #33ec0a;
-  background-color: rgba(0, 0, 0, 0.03);
-}
 
 html {
 scroll-behavior: smooth;
@@ -126,7 +84,7 @@ background: linear-gradient(135deg, #667eee 0%, #764ba2 100%);
 backdrop-filter: blur(10px);
 background: rgba(255, 255, 255, 0.1);
 }
-/* New header/navbar specific styles */
+/* Header/Navbar specific styles */
 .header-glass {
     background: rgba(255, 255, 255, 0.15); /* Lighter glass effect for header */
     backdrop-filter: blur(12px);
@@ -153,6 +111,27 @@ background: rgba(255, 255, 255, 0.1);
     width: 100%;
 }
 
+/* Sidebar Specific Styles */
+.sidebar-closed {
+    transform: translateX(100%); /* Start hidden off-screen */
+    opacity: 0;
+    pointer-events: none;
+}
+.sidebar-open {
+    transform: translateX(0); /* Slide into view */
+    opacity: 1;
+    pointer-events: auto;
+}
+.sidebar {
+    background: rgba(0, 0, 0, 0.85); /* Darker glass for contrast */
+    backdrop-filter: blur(15px); /* Strong blur */
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease; /* Smooth transition */
+}
+@media (min-width: 768px) {
+  .menu-icon { display: none !important; }
+  .sidebar { display: none !important; } /* Hide sidebar on desktop */
+}
 </style>
 </head>
 <body class="relative z-10 text-gray-800">
@@ -166,6 +145,36 @@ background: rgba(255, 255, 255, 0.1);
   Your browser does not support the audio element.
 </audio>
 
+<!-- Hamburger Icon for Mobile -->
+<div class="menu-icon fixed top-4 right-4 z-[100] md:hidden bg-white rounded-full shadow-lg p-2 cursor-pointer">
+  <i class="ri-menu-line ri-2x text-primary"></i>
+</div>
+
+<!-- Sidebar -->
+<aside id="sidebar" class="fixed top-0 right-0 h-full w-full max-w-xs sidebar z-[100] overflow-hidden shadow-2xl flex flex-col justify-between sidebar-closed">
+  <div>
+    <!-- Close Icon -->
+    <div class="close-icon flex justify-end p-6 cursor-pointer">
+      <i class="ri-close-line ri-2x text-gray-400 hover:text-white transition-colors"></i>
+    </div>
+    <!-- Nav Links -->
+    <nav class="flex flex-col space-y-8 px-8 mt-10">
+      <a href="#home"      class="text-2xl font-bold text-white hover:text-primary transition-all">Home</a>
+      <a href="#about%20me" class="text-2xl font-bold text-white hover:text-primary transition-all">About Me</a>
+      <a href="#skills"    class="text-2xl font-bold text-white hover:text-primary transition-all">Skills</a>
+      <a href="#projects"  class="text-2xl font-bold text-white hover:text-primary transition-all">Projects</a>
+      <a href="#contact"   class="text-2xl font-bold text-white hover:text-primary transition-all">Contact</a>
+    </nav>
+  </div>
+  <!-- Social Icons -->
+  <div class="flex gap-6 justify-center pb-8">
+    <a href="https://github.com/CodewithBikram2025" target="_blank" class="text-gray-400 hover:text-primary transition text-3xl"><i class="ri-github-fill"></i></a>
+    <a href="https://www.linkedin.com/in/bikramjit-pakhira-435b7633b" target="_blank" class="text-gray-400 hover:text-primary transition text-3xl"><i class="ri-linkedin-fill"></i></a>
+    <a href="https://x.com/Bikramjit2028?" target="_blank" class="text-gray-400 hover:text-primary transition text-3xl"><i class="ri-twitter-fill"></i></a>
+    <a href="https://instagram.com/bikram_20_28" target="_blank" class="text-gray-400 hover:text-primary transition text-3xl"><i class="ri-instagram-fill"></i></a>
+  </div>
+</aside>
+
 <header class="fixed top-0 w-full header-glass z-50">
 <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex justify-between items-center h-16">
@@ -177,32 +186,15 @@ background: rgba(255, 255, 255, 0.1);
 <div class="hidden md:block">
 <div class="ml-10 flex items-baseline space-x-8">
 <a href="#home" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Home</a>
-<a href="#about me" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">About Me</a>
+<a href="#about%20me" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">About Me</a>
 <a href="#skills" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Skills</a>
 <a href="#projects" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Projects</a>
 <a href="#contact" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Contact</a>
 </div>
 </div>
-<div class="md:hidden">
-<button id="mobile-menu-btn" class="w-10 h-10 flex items-center justify-center text-white hover:text-primary transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary rounded-md">
-<i class="ri-menu-line text-2xl"></i>
-</button>
-</div>
+<!-- The mobile menu button (<div class="md:hidden">...</div>) is removed from here -->
 </div>
 </nav>
-<div id="mobile-menu" class="mobile-menu">
-  <!-- Close button inside mobile menu -->
-  <button id="mobile-menu-close-btn" class="absolute top-4 right-4 text-gray-700 hover:text-primary transition-colors">
-    <i class="ri-close-line text-3xl"></i>
-  </button>
-  <div class="px-6 py-4 space-y-4">
-    <a href="#home" class="block text-gray-700 hover:text-primary py-2 text-sm font-medium transition-colors">Home</a>
-    <a href="#about me" class="block text-gray-700 hover:text-primary py-2 text-sm font-medium transition-colors">About Me</a>
-    <a href="#skills" class="block text-gray-700 hover:text-primary py-2 text-sm font-medium transition-colors">Skills</a>
-    <a href="#projects" class="block text-gray-700 hover:text-primary py-2 text-sm font-medium transition-colors">Projects</a>
-    <a href="#contact" class="block text-gray-700 hover:text-primary py-2 text-sm font-medium transition-colors">Contact</a>
-  </div>
-</div>
 </header>
 <div id="audio-control" class="fixed bottom-4 right-4 z-50">
   <button onclick="playAudio()" class="bg-primary text-white px-4 py-2 rounded-full shadow-lg hover:bg-secondary transition-all">
@@ -265,7 +257,7 @@ BIKRAMJIT PAKHIRA
 </div>
 </section>
 
-<section id="about me" class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-20 text-white text-center">
+<section id="about%20me" class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-20 text-white text-center">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16 fade-in-up">
       <h2 class="text-5xl font-bold mb-6">About <span class="text-green-500">Me</span></h2>
@@ -679,17 +671,17 @@ KhaabarAdda is an online food platform offering a diverse menu of high-quality d
 <div class="mt-8">
 <h4 class="font-medium mb-4 text-white">Follow Me</h4>
 <div class="flex gap-4">
-<a href="https://github.com/CodewithBikram2025" class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg text-white hover:text-primary transition-colors">
-<i class="ri-github-line text-xl"></i>
+<a href="https://github.com/CodewithBikram2025" target="_blank" class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg text-white hover:text-primary transition-colors">
+<i class="ri-github-fill text-xl"></i>
 </a>
-<a href="https://www.linkedin.com/in/bikramjit-pakhira-435b7633b" class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg text-white hover:text-primary transition-colors">
-<i class="ri-linkedin-line text-xl"></i>
+<a href="https://www.linkedin.com/in/bikramjit-pakhira-435b7633b" target="_blank" class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg text-white hover:text-primary transition-colors">
+<i class="ri-linkedin-fill text-xl"></i>
 </a>
-<a href="https://x.com/Bikramjit2028?" class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg text-white hover:text-primary transition-colors">
-<i class="ri-twitter-line text-xl"></i>
+<a href="https://x.com/Bikramjit2028?" target="_blank" class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg text-white hover:text-primary transition-colors">
+<i class="ri-twitter-fill text-xl"></i>
 </a>
-<a href="https://instagram.com/bikram_20_28" class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg text-white hover:text-primary transition-colors">
-<i class="ri-instagram-line text-xl"></i>
+<a href="https://instagram.com/bikram_20_28" target="_blank" class="bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-left shadow-lg text-white hover:text-primary transition-colors">
+<i class="ri-instagram-fill text-xl"></i>
 </a>
 </div>
 </div>
@@ -763,31 +755,38 @@ type();
 </script>
 <script id="mobile-menu-toggle">
 document.addEventListener('DOMContentLoaded', function() {
-const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-const mobileMenu = document.getElementById('mobile-menu');
-const mobileMenuCloseBtn = document.getElementById('mobile-menu-close-btn'); // New close button
+  const menuIcon = document.querySelector('.menu-icon');
+  const sidebar = document.getElementById('sidebar');
+  const closeIcon = sidebar.querySelector('.close-icon');
+  const links = sidebar.querySelectorAll('nav a');
 
-mobileMenuBtn.addEventListener('click', function() {
-  mobileMenu.classList.add('open');
-});
-
-mobileMenuCloseBtn.addEventListener('click', function() { // Event listener for new close button
-  mobileMenu.classList.remove('open');
-});
-
-// Close menu when clicking outside (still good to have)
-document.addEventListener('click', function(e) {
-  if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
-    mobileMenu.classList.remove('open');
-  }
-});
-
-const mobileLinks = mobileMenu.querySelectorAll('a');
-mobileLinks.forEach(link => {
-  link.addEventListener('click', function() {
-    mobileMenu.classList.remove('open');
+  // Open sidebar
+  menuIcon.addEventListener('click', () => {
+    sidebar.classList.remove('sidebar-closed');
+    sidebar.classList.add('sidebar-open');
   });
-});
+
+  // Close sidebar
+  closeIcon.addEventListener('click', () => {
+    sidebar.classList.remove('sidebar-open');
+    sidebar.classList.add('sidebar-closed');
+  });
+
+  // Close on link click
+  links.forEach(link => {
+    link.addEventListener('click', () => {
+      sidebar.classList.remove('sidebar-open');
+      sidebar.classList.add('sidebar-closed');
+    });
+  });
+
+  // Optional: click outside closes sidebar
+  document.addEventListener('click', (e) => {
+    if (!sidebar.contains(e.target) && !menuIcon.contains(e.target)) {
+      sidebar.classList.remove('sidebar-open');
+      sidebar.classList.add('sidebar-closed');
+    }
+  });
 });
 </script>
 <script id="scroll-animations">
@@ -923,8 +922,3 @@ function playAudio() {
 </script>
 </body>
 </html>
-
-
-
-
-
