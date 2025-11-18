@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading Portfolio</title>
+    <title>Initializing System...</title>
+    <!-- Import nice tech font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
     <style>
         body {
             margin: 0;
@@ -12,53 +16,118 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #222; /* Dark background */
-            font-family: sans-serif;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #000000 100%);
+            font-family: 'Orbitron', sans-serif;
             color: white;
             flex-direction: column;
         }
 
-        .loading-wrapper {
+        /* --- REACTOR SPINNER --- */
+        .reactor-container {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin-bottom: 40px;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
         }
 
-        .loading-container {
-            position: relative;
-            width: 120px;
-            height: 120px;
-            margin-bottom: 20px;
-        }
-
-        .spinner {
+        /* Outer Ring (Blue) */
+        .reactor-ring {
+            position: absolute;
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            border: 8px solid transparent;
-            border-top-color: #ff5733; /* Orange */
-            border-bottom-color: #33ff57; /* Green */
-            border-left-color: #3357ff; /* Blue */
-            border-right-color: #ff33c7; /* Pink */
-            animation: spin 1.2s linear infinite;
+            border: 4px solid transparent;
+            border-top-color: #1e40af;
+            border-bottom-color: #1e40af;
+            box-shadow: 0 0 20px #1e40af;
+            animation: spin 2s linear infinite;
         }
 
-        .spinner::before {
-            content: '';
+        /* Middle Ring (Green) */
+        .reactor-ring-2 {
             position: absolute;
-            top: 15px;
-            left: 15px;
-            right: 15px;
-            bottom: 15px;
+            width: 70%;
+            height: 70%;
             border-radius: 50%;
-            border: 8px solid transparent;
-            border-top-color: #ffeb3b; /* Yellow */
-            border-bottom-color: #8aff33; /* Light Green */
-            border-left-color: #33fff0; /* Cyan */
-            border-right-color: #e033ff; /* Purple */
+            border: 4px solid transparent;
+            border-left-color: #33ec0a;
+            border-right-color: #33ec0a;
+            box-shadow: 0 0 15px #33ec0a;
             animation: spin-reverse 1.5s linear infinite;
         }
 
+        /* Inner Core (Pulsing) */
+        .reactor-core {
+            width: 40%;
+            height: 40%;
+            background: radial-gradient(circle, #ffffff 0%, #33ec0a 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 30px #33ec0a, inset 0 0 20px #ffffff;
+            animation: pulse-core 0.8s ease-in-out infinite alternate;
+        }
+
+        /* --- TEXT STYLES --- */
+        .status-text {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.5rem;
+            color: #33ec0a;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(51, 236, 10, 0.7);
+        }
+
+        .percentage-container {
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            margin-bottom: 20px;
+        }
+
+        .percentage-sign {
+            font-size: 1.5rem;
+            color: #666;
+        }
+
+        /* --- PROGRESS BAR --- */
+        .progress-container {
+            position: relative;
+            width: 300px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #1e40af, #33ec0a);
+            box-shadow: 0 0 15px #33ec0a;
+            border-radius: 4px;
+            transition: width 0.1s linear;
+            position: relative;
+        }
+
+        /* The leading "spark" on the progress bar */
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 5px;
+            height: 100%;
+            background: white;
+            box-shadow: 0 0 10px white;
+        }
+
+        /* --- ANIMATIONS --- */
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -69,83 +138,92 @@
             100% { transform: rotate(-360deg); }
         }
 
-        .loading-text {
-            font-size: 1.5em;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-            animation: pulse 1.5s infinite alternate;
+        @keyframes pulse-core {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            100% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 50px #33ec0a; }
         }
 
-        @keyframes pulse {
-            0% { opacity: 0.7; transform: scale(0.95); }
-            100% { opacity: 1; transform: scale(1.05); }
+        /* Glitch effect for text */
+        .glitch-text {
+            animation: glitch 3s infinite;
         }
 
-        /* Progress Bar Styles */
-        .progress-bar-container {
-            width: 250px; /* Width of the progress bar */
-            height: 15px;
-            background-color: #444; /* Background of the empty bar */
-            border-radius: 8px;
-            overflow: hidden;
-            margin-top: 20px;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            width: 0%; /* Initial width for animation */
-            background: linear-gradient(to right, #4CAF50, #8BC34A); /* Green gradient */
-            border-radius: 8px;
-            transition: width 3s linear; /* Matches the JavaScript setTimeout duration */
-        }
-
-        .percentage-text {
-            font-size: 1.2em;
-            margin-top: 10px;
-            color: #ccc;
+        @keyframes glitch {
+            0% { opacity: 1; }
+            95% { opacity: 1; }
+            96% { opacity: 0.3; }
+            97% { opacity: 1; }
+            98% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
     </style>
 </head>
 <body>
-    <div class="loading-wrapper">
-        <div class="loading-container">
-            <div class="spinner"></div>
-        </div>
-        <div class="loading-text">Loading Portfolio...</div>
-        <div class="progress-bar-container">
-            <div class="progress-bar-fill" id="progressBarFill"></div>
-        </div>
-        <div class="percentage-text"><span id="percentage">0</span>%</div>
+
+    <div class="reactor-container">
+        <div class="reactor-ring"></div>
+        <div class="reactor-ring-2"></div>
+        <div class="reactor-core"></div>
+    </div>
+
+    <div class="percentage-container">
+        <span id="percentage">0</span><span class="percentage-sign">%</span>
+    </div>
+
+    <div class="status-text glitch-text" id="statusText">INITIALIZING...</div>
+
+    <div class="progress-container">
+        <div class="progress-fill" id="progressBarFill"></div>
     </div>
 
     <script>
         const progressBarFill = document.getElementById('progressBarFill');
         const percentageText = document.getElementById('percentage');
+        const statusText = document.getElementById('statusText');
+        
         let currentPercentage = 0;
-        const totalLoadingTime = 3000; // 3 seconds for loading
-        const updateInterval = 30; // Update percentage every 30ms
+        const totalLoadingTime = 3500; // 3.5 seconds
+        const updateInterval = 30; 
+        
+        // Calculate how much to increase per interval to reach 100 in totalLoadingTime
+        const increment = 100 / (totalLoadingTime / updateInterval);
 
         function updateProgress() {
             if (currentPercentage < 100) {
-                currentPercentage += (updateInterval / totalLoadingTime) * 100;
-                if (currentPercentage > 100) {
-                    currentPercentage = 100; // Cap at 100%
+                currentPercentage += increment;
+                
+                // Cap at 100
+                let displayValue = Math.min(100, Math.round(currentPercentage));
+                
+                progressBarFill.style.width = displayValue + '%';
+                percentageText.textContent = displayValue;
+
+                // Dynamic Text Updates based on progress
+                if (displayValue < 30) {
+                    statusText.textContent = "INITIALIZING CORE...";
+                } else if (displayValue < 60) {
+                    statusText.textContent = "LOADING ASSETS...";
+                    statusText.style.color = "#33ec0a"; // Green
+                } else if (displayValue < 90) {
+                    statusText.textContent = "OPTIMIZING SYSTEM...";
+                    statusText.style.color = "#1e40af"; // Blue
+                } else {
+                    statusText.textContent = "WELCOME, BIKRAMJIT.";
+                    statusText.style.color = "#ffffff";
                 }
-                progressBarFill.style.width = currentPercentage + '%';
-                percentageText.textContent = Math.round(currentPercentage);
+
                 setTimeout(updateProgress, updateInterval);
+            } else {
+                // Animation Complete
+                setTimeout(() => {
+                    // Redirect to your main file
+                    window.location.href = "index1.html"; 
+                }, 500);
             }
         }
 
-        // Start the progress update
+        // Start the animation
         updateProgress();
-
-        // Simulate a loading time and redirect
-        setTimeout(() => {
-            window.location.href = "index1.html"; // <<<<<<< IMPORTANT: Replace with your actual portfolio's main page URL
-        }, totalLoadingTime);
     </script>
 </body>
 </html>
-
