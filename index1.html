@@ -204,6 +204,58 @@ scroll-behavior: smooth;
   .menu-icon { display: none !important; }
   .sidebar { display: none !important; } 
 }
+/* Floating Animation for Skill Icons */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.tech-icon-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(10, 10, 15, 0.8); /* Dark background */
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.4s ease;
+    backdrop-filter: blur(5px);
+}
+
+/* Hover Effect: Glow and Scale */
+.tech-icon-box:hover {
+    transform: scale(1.15);
+    border-color: var(--tech-color);
+    box-shadow: 0 0 20px var(--tech-color);
+}
+
+/* The Icon inside */
+.tech-icon-box i, .tech-icon-box span {
+    font-size: 3rem;
+    color: white; /* Default, changes to specific color on hover/load via classes */
+    transition: color 0.3s ease;
+}
+
+.tech-icon-box:hover i, .tech-icon-box:hover span {
+    color: var(--tech-color);
+}
+
+/* Animation Delay for staggered floating effect */
+.animate-float {
+    animation: float 4s ease-in-out infinite;
+}
+.delay-100 { animation-delay: 0.5s; }
+.delay-200 { animation-delay: 1.0s; }
+.delay-300 { animation-delay: 1.5s; }
+
+.tech-icon-box img.tech-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
 </style>
 </head>
 <body class="relative z-10 text-gray-800">
@@ -484,6 +536,95 @@ BIKRAMJIT PAKHIRA
             </div>
           </div>
         </div>
+      </div>
+
+    </div>
+  <br>
+    <!-- Section Header -->
+    <div class="text-center mb-16 fade-in-up">
+      <p class="text-sm font-bold tracking-widest text-gray-400 uppercase mb-2">What I have done so far</p>
+      <h2 class="text-5xl font-bold">Technologies I've <span class="text-green-500">Worked With</span></h2>
+    </div>
+      
+    <!-- Skills Grid -->
+    <div class="flex flex-wrap justify-center gap-8 md:gap-12 fade-in-up">
+
+      <!-- HTML5 -->
+      <div class="tech-icon-box animate-float" style="--tech-color: #e34f26;">
+        <i class="ri-html5-fill text-[#e34f26]"></i>
+      </div>
+
+      <!-- CSS3 -->
+      <div class="tech-icon-box animate-float delay-100" style="--tech-color: #1572b6;">
+        <i class="ri-css3-fill text-[#1572b6]"></i>
+      </div>
+
+      <!-- JavaScript -->
+      <div class="tech-icon-box animate-float delay-200" style="--tech-color: #f7df1e;">
+        <i class="ri-javascript-fill text-[#f7df1e]"></i>
+      </div>
+
+      <!-- Python -->
+      <div class="tech-icon-box animate-float delay-200" style="--tech-color: #3776AB;">
+        <img 
+        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" 
+        alt="Python Logo" 
+        class="tech-img"
+        >
+      </div>
+
+
+      <!-- React -->
+      <div class="tech-icon-box animate-float" style="--tech-color: #61dafb;">
+        <i class="ri-reactjs-line text-[#61dafb]"></i>
+      </div>
+
+      <!-- C Language (Text representation as no standard icon exists) -->
+      <div class="tech-icon-box animate-float delay-100" style="--tech-color: #00599C;">
+        <span class="font-bold font-sans text-[#00599C]">C</span>
+      </div>
+
+      <!-- Tailwind CSS -->
+      <div class="tech-icon-box animate-float delay-200" style="--tech-color: #38bdf8;">
+        <i class="ri-tailwind-css-fill text-[#38bdf8]"></i>
+      </div>
+
+      <!-- C++ Language -->
+      <div class="tech-icon-box animate-float delay-300" style="--tech-color: #00599C;">
+        <span class="font-bold font-sans text-2xl text-[#00599C]">C++</span>
+      </div>
+
+      <!-- Firebase -->
+      <div class="tech-icon-box animate-float" style="--tech-color: #FFCA28;">
+        <i class="ri-fire-fill text-[#FFCA28]"></i> <!-- Fire icon for Firebase -->
+      </div>
+
+
+      <!-- SQL / MySQL -->
+      <div class="tech-icon-box animate-float" style="--tech-color: #4479A1;">
+        <i class="ri-database-2-fill text-[#4479A1]"></i> <!-- Database icon for SQL -->
+      </div>
+
+
+      <!-- Git -->
+      <div class="tech-icon-box animate-float delay-200" style="--tech-color: #f05032;">
+        <i class="ri-git-merge-fill text-[#f05032]"></i>
+      </div>
+
+      <!-- Figma -->
+      <div class="tech-icon-box animate-float delay-200" style="--tech-color: #F24E1E;">
+        <img 
+       src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" 
+       alt="Figma Logo" 
+       class="tech-img"
+        >
+      </div>
+
+
+
+      <!-- GitHub -->
+      <div class="tech-icon-box animate-float" style="--tech-color: #ffffff;">
+        <i class="ri-github-fill text-white"></i>
       </div>
 
     </div>
