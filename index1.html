@@ -69,37 +69,41 @@ width: var(--skill-width);
 }
 
 /* ---------------------------------------------------------
-   UPDATED PROJECT CARD ANIMATION (FIRE/CURRENT FLOW)
+   UNIVERSAL NEON / FIRE CURRENT ANIMATION
+   Applied to: Home Image, About Timeline, Skills, Projects, Contact
 --------------------------------------------------------- */
 @keyframes rotate-border {
     0% { transform: translate(-50%, -50%) rotate(0deg); }
     100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-.project-card {
+/* The Main Container Class */
+.neon-card {
     position: relative;
     overflow: hidden;
     border-radius: 12px; /* Matches Tailwind rounded-xl */
     z-index: 1;
-    /* Remove default background to let the pseudo-elements handle it */
+    /* Override any inline background to ensure the effect works */
     background: transparent !important; 
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-.project-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 30px -5px rgba(51, 236, 10, 0.3); /* Green glow on hover */
+/* Hover Effect */
+.neon-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px -5px rgba(51, 236, 10, 0.3); /* Green glow */
 }
 
-/* The Spinning Current/Fire Beam */
-.project-card::before {
+/* The Rotating Beam (Conic Gradient) */
+.neon-card::before {
     content: '';
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 250%; /* Large enough to cover corners during rotation */
-    height: 250%;
-    /* Conic gradient creates the "beam" effect */
+    /* Width/Height must be large to cover rectangular corners during rotation */
+    width: 300%; 
+    height: 300%;
     background: conic-gradient(
         transparent 0deg, 
         transparent 250deg, 
@@ -111,19 +115,40 @@ width: var(--skill-width);
     z-index: -2;
 }
 
-/* The Inner Background (Masks the center of the beam) */
-.project-card::after {
+/* The Inner Background (Mask) */
+.neon-card::after {
     content: '';
     position: absolute;
-    inset: 2px; /* This determines border thickness */
-    background: rgba(10, 10, 10, 0.8); /* Dark semi-transparent background */
-    backdrop-filter: blur(20px); /* Glass effect */
+    inset: 2px; /* Border thickness */
+    background: rgba(15, 15, 20, 0.9); /* Dark background to make neon pop */
+    backdrop-filter: blur(20px);
     border-radius: 10px;
     z-index: -1;
 }
 
-/* Ensure text stays above the background */
-.project-card > * {
+/* Specific tweak for the circular profile image */
+.neon-circle {
+    border-radius: 9999px;
+}
+.neon-circle::after {
+    border-radius: 9999px;
+}
+
+/* Ensure inputs inside neon cards look good */
+.neon-card input, 
+.neon-card textarea {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+}
+.neon-card input:focus, 
+.neon-card textarea:focus {
+    border-color: #33ec0a;
+    box-shadow: 0 0 0 1px #33ec0a;
+}
+
+/* Ensure content sits on top */
+.neon-card > * {
     position: relative;
     z-index: 2;
 }
@@ -132,14 +157,6 @@ width: var(--skill-width);
 html {
 scroll-behavior: smooth;
 }
-.gradient-bg {
-background: linear-gradient(135deg, #667eee 0%, #764ba2 100%);
-}
-.glass-effect {
-backdrop-filter: blur(10px);
-background: rgba(255, 255, 255, 0.1);
-}
-/* Header/Navbar specific styles */
 .header-glass {
     background: rgba(255, 255, 255, 0.15); 
     backdrop-filter: blur(12px);
@@ -208,11 +225,9 @@ background: rgba(255, 255, 255, 0.1);
 <!-- Sidebar -->
 <aside id="sidebar" class="fixed top-0 right-0 h-full w-full max-w-xs sidebar z-[100] overflow-hidden shadow-2xl flex flex-col justify-between sidebar-closed">
   <div>
-    <!-- Close Icon -->
     <div class="close-icon flex justify-end p-6 cursor-pointer">
       <i class="ri-close-line ri-2x text-gray-400 hover:text-white transition-colors"></i>
     </div>
-    <!-- Nav Links -->
     <nav class="flex flex-col space-y-8 px-8 mt-10">
       <a href="#home"      class="text-2xl font-bold text-white hover:text-primary transition-all">Home</a>
       <a href="#about%20me" class="text-2xl font-bold text-white hover:text-primary transition-all">About Me</a>
@@ -243,15 +258,17 @@ background: rgba(255, 255, 255, 0.1);
 </div>
 </nav>
 </header>
+
 <div id="audio-control" class="fixed bottom-4 right-4 z-50">
   <button onclick="playAudio()" class="bg-primary text-white px-4 py-2 rounded-full shadow-lg hover:bg-secondary transition-all">
     🔊 Play Background Sound
   </button>
 </div>
 <div class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-60 -z-10"></div>
-<main>
-<section id="home" class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-20 text-white text-center">
 
+<main>
+<!-- HOME SECTION -->
+<section id="home" class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-20 text-white text-center">
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 <div class="fade-in-up text-left">
@@ -275,35 +292,33 @@ BIKRAMJIT PAKHIRA
 </button>
 </div>
 <div class="mt-12 flex items-center gap-6">
-<a href="https://github.com/CodewithBikram2025" class="text-gray-400 hover:text-primary transition-colors">
-<i class="ri-github-fill text-2xl"></i>
-</a>
-<a href="https://www.linkedin.com/in/bikramjit-pakhira-435b7633b" class="text-gray-400 hover:text-primary transition-colors">
-<i class="ri-linkedin-fill text-2xl"></i>
-</a>
-<a href="https://x.com/Bikramjit2028?" class="text-gray-400 hover:text-primary transition-colors">
-<i class="ri-twitter-fill text-2xl"></i>
-</a>
-<a href="https://instagram.com/bikram_20_28" class="text-gray-400 hover:text-primary transition-colors">
-<i class="ri-instagram-fill text-2xl"></i>
-</a>
+<a href="https://github.com/CodewithBikram2025" class="text-gray-400 hover:text-primary transition-colors"><i class="ri-github-fill text-2xl"></i></a>
+<a href="https://www.linkedin.com/in/bikramjit-pakhira-435b7633b" class="text-gray-400 hover:text-primary transition-colors"><i class="ri-linkedin-fill text-2xl"></i></a>
+<a href="https://x.com/Bikramjit2028?" class="text-gray-400 hover:text-primary transition-colors"><i class="ri-twitter-fill text-2xl"></i></a>
+<a href="https://instagram.com/bikram_20_28" class="text-gray-400 hover:text-primary transition-colors"><i class="ri-instagram-fill text-2xl"></i></a>
 </div>
 </div>
-<div class="fade-in-up relative">
-<div class="relative w-full aspect-square rounded-full overflow-hidden border-8 border-white shadow-2xl transform hover:scale-105 transition-transform duration-300" style="background-image: url('pic.jpg'); background-size: cover; background-position: center;">
-<div class="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent"></div>
-</div>
-<div class="absolute -bottom-4 -right-4 w-24 h-24 bg-primary rounded-full flex items-center justify-center text-white text-sm font-medium">
-<div class="text-center">
-<div class="font-bold">1.5+ Years</div>
-<div class="text-xs">Experience</div>
-</div>
-</div>
+<!-- ANIMATED PROFILE IMAGE -->
+<div class="fade-in-up relative flex justify-center">
+  <!-- Added 'neon-card neon-circle' class here -->
+  <div class="neon-card neon-circle relative w-full max-w-md aspect-square transform hover:scale-105 transition-transform duration-300">
+    <div class="absolute inset-0 rounded-full overflow-hidden" style="background-image: url('pic.jpg'); background-size: cover; background-position: center;">
+      <div class="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent"></div>
+    </div>
+  </div>
+  
+  <div class="absolute -bottom-4 -right-4 w-24 h-24 bg-primary rounded-full flex items-center justify-center text-white text-sm font-medium shadow-lg z-10">
+    <div class="text-center">
+      <div class="font-bold">1.5+ Years</div>
+      <div class="text-xs">Experience</div>
+    </div>
+  </div>
 </div>
 </div>
 </div>
 </section>
 
+<!-- ABOUT SECTION -->
 <section id="about%20me" class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-20 text-white text-center">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16 fade-in-up">
@@ -312,43 +327,38 @@ BIKRAMJIT PAKHIRA
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start fade-in-up">
       <!-- Text Content -->
-      <div>
+      <div class="neon-card p-8 text-left">
         <h3 class="text-2xl font-semibold mb-4 text-white">Who I Am</h3>
-        <i><p class="text-lg max-w-3xl mb-10" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">
+        <i><p class="text-lg mb-6" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">
           I’m a passionate 2nd-year college student currently pursuing my degree in Computer Science & Engineering at B. P. Poddar Institute of Management & Technology.
-          I have a strong interest in web development, AI, or cybersecurity, and I love exploring new technologies and building projects that solve real-world problems.
+          I have a strong interest in web development, AI, or cybersecurity, and I love exploring new technologies.
         </p>
-        <p class="text-lg max-w-3xl mb-10" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">
-          I’m currently focusing on improving my knowledge in areas like front-end development and DSA in Python language, and I’m always eager to connect with like-minded individuals and industry professionals.
+        <p class="text-lg mb-10" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">
+          I’m currently focusing on improving my knowledge in areas like front-end development and DSA in Python language, and I’m always eager to connect with like-minded individuals.
         </p></i>
-
         <a href="Bikramjit resume (3) (1).pdf" download class="inline-block bg-primary text-white px-6 py-3 rounded-button font-medium hover:bg-secondary transition-all">Download Resume</a>
       </div>
 
-      <!-- Right Column: Timeline -->
-      <div class="bg-white bg-opacity-10 p-6 rounded-xl backdrop-blur-lg text-left shadow-lg">  
-        <!-- Item 1 -->
+      <!-- Right Column: Timeline (NEON CARD APPLIED) -->
+      <div class="neon-card p-6 text-left">  
         <div class="mb-6">
           <h4 class="text-2xl font-semibold text-green-400 mb-2">Primary Education</h4>
-          <p class="text-lg max-w-3xl mb-1" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">Ghatal Vidyasagar High School</p>
+          <p class="text-lg max-w-3xl mb-1">Ghatal Vidyasagar High School</p>
           <p class="text-sm text-gray-300">Dec 2015 - 2021 | Grade: <strong>85%</strong></p>
         </div>
-        <!-- Item 2 -->
         <div class="mb-6">
           <h4 class="text-2xl font-semibold text-green-400 mb-2">Secondary Education</h4>
-          <p class="text-lg max-w-3xl mb-1" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">Ghatal Vidyasagar High School</p>
+          <p class="text-lg max-w-3xl mb-1">Ghatal Vidyasagar High School</p>
           <p class="text-sm text-gray-300">Feb 2021 - Mar 2022 | Grade: <strong>88.85%</strong></p>
         </div>
-        <!-- Item 3 -->
         <div class="mb-6">
           <h4 class="text-2xl font-semibold text-green-400 mb-2">Higher Secondary</h4>
-          <p class="text-lg max-w-3xl mb-1" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">Ghatal Vidyasagar High School</p>
+          <p class="text-lg max-w-3xl mb-1">Ghatal Vidyasagar High School</p>
           <p class="text-sm text-gray-300">Feb 2022 - Mar 2024 | Grade: <strong>66.68%</strong></p>
         </div>
-        <!-- Item 4 -->
         <div>
           <h4 class="text-2xl font-semibold text-green-400 mb-2">College</h4>
-          <p class="text-lg max-w-3xl mb-1" style="text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);">B. P. Poddar Institute of Management & Technology</p>
+          <p class="text-lg max-w-3xl mb-1">B. P. Poddar Institute of Management & Technology</p>
           <p class="text-sm text-gray-300">1st Year Result | SGPA: <strong>7.5</strong></p>
         </div>
       </div>
@@ -356,7 +366,7 @@ BIKRAMJIT PAKHIRA
   </div>
 </section>
 
-
+<!-- SKILLS SECTION -->
 <section id="skills" class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-20 text-white text-center">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16 fade-in-up">
@@ -365,9 +375,8 @@ BIKRAMJIT PAKHIRA
     </div>
       
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-      <!-- Programming Languages -->
-      <div class="bg-white bg-opacity-10 p-6 rounded-xl backdrop-blur-lg text-left shadow-lg">
+      <!-- Programming Languages (NEON CARD) -->
+      <div class="neon-card p-6 text-left">
         <div class="w-12 h-12 flex items-center justify-center bg-blue-600/20 rounded-xl mb-6">
           <i class="ri-terminal-box-line ri-xl text-primary"></i>
         </div>
@@ -382,7 +391,6 @@ BIKRAMJIT PAKHIRA
               <div class="bg-green-500 h-2 rounded-full skill-bar" style="--skill-width: 65%"></div>
             </div>
           </div>
-
           <div class="skill-item">
             <div class="flex justify-between mb-2">
               <span class="text-sm font-medium">Python</span>
@@ -392,7 +400,6 @@ BIKRAMJIT PAKHIRA
               <div class="bg-green-500 h-2 rounded-full skill-bar" style="--skill-width: 60%"></div>
             </div>
           </div>
-
           <div class="skill-item">
             <div class="flex justify-between mb-2">
               <span class="text-sm font-medium">JavaScript</span>
@@ -405,8 +412,8 @@ BIKRAMJIT PAKHIRA
         </div>
       </div>
 
-      <!-- Web Technologies -->
-      <div class="bg-white bg-opacity-10 p-6 rounded-xl backdrop-blur-lg text-left shadow-lg">
+      <!-- Web Technologies (NEON CARD) -->
+      <div class="neon-card p-6 text-left">
         <div class="w-12 h-12 flex items-center justify-center bg-blue-600/10 rounded-xl mb-6">
           <i class="ri-global-line ri-xl text-primary"></i>
         </div>
@@ -421,7 +428,6 @@ BIKRAMJIT PAKHIRA
               <div class="bg-green-600 h-2 rounded-full skill-bar" style="--skill-width: 95%"></div>
             </div>
           </div>
-
           <div class="skill-item">
             <div class="flex justify-between mb-2">
               <span class="text-sm font-medium">React.js</span>
@@ -431,7 +437,6 @@ BIKRAMJIT PAKHIRA
               <div class="bg-green-600 h-2 rounded-full skill-bar" style="--skill-width: 45%"></div>
             </div>
           </div>
-
           <div class="skill-item">
             <div class="flex justify-between mb-2">
               <span class="text-sm font-medium">Node.js</span>
@@ -444,8 +449,8 @@ BIKRAMJIT PAKHIRA
         </div>
       </div>
 
-      <!-- Design Tools -->
-      <div class="bg-white bg-opacity-10 p-6 rounded-xl backdrop-blur-lg text-left shadow-lg">
+      <!-- Design Tools (NEON CARD) -->
+      <div class="neon-card p-6 text-left">
         <div class="w-12 h-12 flex items-center justify-center bg-blue-600/10 rounded-xl mb-6">
           <i class="ri-palette-line ri-xl text-primary"></i>
         </div>
@@ -460,7 +465,6 @@ BIKRAMJIT PAKHIRA
               <div class="bg-green-600 h-2 rounded-full skill-bar" style="--skill-width: 85%"></div>
             </div>
           </div>
-
           <div class="skill-item">
             <div class="flex justify-between mb-2">
               <span class="text-sm font-medium">Photoshop</span>
@@ -470,7 +474,6 @@ BIKRAMJIT PAKHIRA
               <div class="bg-green-600 h-2 rounded-full skill-bar" style="--skill-width: 70%"></div>
             </div>
           </div>
-
           <div class="skill-item">
             <div class="flex justify-between mb-2">
               <span class="text-sm font-medium">Canva</span>
@@ -487,6 +490,7 @@ BIKRAMJIT PAKHIRA
   </div>
 </section>
 
+<!-- PROJECTS SECTION -->
 <section id="projects" class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-20 text-white text-center">
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="text-center mb-16 fade-in-up">
@@ -494,23 +498,25 @@ BIKRAMJIT PAKHIRA
 <p class="text-lg text-gray-400">Some of my recent work and personal projects</p>
 </div>
 <div class="mb-8 flex justify-center fade-in-up">
-<div class="bg-white bg-opacity-10 p-2 rounded-xl backdrop-blur-lg text-left shadow-lg">
+<!-- Filter Container (NEON CARD) -->
+<div class="neon-card p-2 rounded-xl text-left">
 <button class="filter-btn active px-8 py-2 rounded-full text-sm font-medium transition-all bg-primary text-white" data-filter="all">All</button>
-<button class="filter-btn px-8 py-2 rounded-full text-sm font-medium transition-all text-gray-600" data-filter="web">Web</button>
-<button class="filter-btn px-8 py-2 rounded-full text-sm font-medium transition-all text-gray-600" data-filter="design">Design</button>
+<button class="filter-btn px-8 py-2 rounded-full text-sm font-medium transition-all text-gray-300" data-filter="web">Web</button>
+<button class="filter-btn px-8 py-2 rounded-full text-sm font-medium transition-all text-gray-300" data-filter="design">Design</button>
 </div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-<div class="project-card bg-white bg-opacity-10 p-0 rounded-xl overflow-hidden backdrop-blur-lg text-left shadow-lg" data-category="web">
+  <!-- Replaced .project-card with .neon-card -->
+<div class="neon-card text-left" data-category="web">
 <div class="h-48 bg-cover bg-center" style="background-image: url('pic1.png')"></div>
 <div class="p-6">
 <h3 class="text-xl font-semibold mb-2">Healthmate App</h3>
 <p class="text-gray-400 mb-4">🩺 Welcome to HealthMate 2025
-Your personal guide to better health. HealthMate 2025 helps you track your fitness, monitor your health stats, and stay informed with the latest wellness tips. Start your journey toward a healthier you — one step at a time.</p>
+Your personal guide to better health. HealthMate 2025 helps you track your fitness.</p>
 <div class="flex flex-wrap gap-2 mb-4">
-<span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">HTML</span>
-<span class="px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">CSS</span>
-<span class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">JavaScript</span>
+<span class="px-3 py-1 bg-blue-900/50 text-blue-200 text-xs rounded-full">HTML</span>
+<span class="px-3 py-1 bg-green-900/50 text-green-200 text-xs rounded-full">CSS</span>
+<span class="px-3 py-1 bg-yellow-900/50 text-yellow-200 text-xs rounded-full">JavaScript</span>
 </div>
 <div class="flex gap-3">
 <a href="https://healthmate2025.ct.ws" target="_blank" 
@@ -521,15 +527,16 @@ Your personal guide to better health. HealthMate 2025 helps you track your fitne
 </div>
 </div>
 </div>
-<div class="project-card bg-white bg-opacity-10 p-0 rounded-xl overflow-hidden backdrop-blur-lg text-left shadow-lg" data-category="web">
+
+<div class="neon-card text-left" data-category="web">
 <div class="h-48 bg-cover bg-center" style="background-image: url('pic2.png')"></div>
 <div class="p-6">
 <h3 class="text-xl font-semibold mb-2">Sitara.ai</h3>
-<p class="text-gray-400 mb-4">Sitaraai is a smart AI-powered platform built to assist, create, and explore. From answering questions to generating ideas, Sitaraai helps you work smarter and faster using the power of artificial intelligence.</p>
+<p class="text-gray-400 mb-4">Sitaraai is a smart AI-powered platform built to assist, create, and explore ideas.</p>
 <div class="flex flex-wrap gap-2 mb-4">
-<span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">HTML</span>
-<span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">CSS</span>
-<span class="px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">JavaScript</span>
+<span class="px-3 py-1 bg-blue-900/50 text-blue-200 text-xs rounded-full">HTML</span>
+<span class="px-3 py-1 bg-purple-900/50 text-purple-200 text-xs rounded-full">CSS</span>
+<span class="px-3 py-1 bg-red-900/50 text-red-200 text-xs rounded-full">JavaScript</span>
 </div>
 <div class="flex gap-3">
 <a href="https://sitara-ai-rh58.vercel.app/" target="_blank" 
@@ -540,15 +547,15 @@ Your personal guide to better health. HealthMate 2025 helps you track your fitne
 </div>
 </div>
 </div>
-<div class="project-card bg-white bg-opacity-10 p-0 rounded-xl overflow-hidden backdrop-blur-lg text-left shadow-lg" data-category="web">
+
+<div class="neon-card text-left" data-category="web">
 <div class="h-48 bg-cover bg-center" style="background-image: url('pic3.png')"></div>
 <div class="p-6">
 <h3 class="text-xl font-semibold mb-2">Portfolio Website</h3>
-<p class="text-gray-400 mb-4">Design a personal portfolio website for a frontend developer built with modern web technologies. Use Tailwind CSS, include a hero section with name, title, and profile image, a skills section with progress bars, and a projects section with live demo buttons. Make it responsive and use smooth scroll and fade-in animations.</p>
+<p class="text-gray-400 mb-4">Design a personal portfolio website for a frontend developer built with modern web technologies.</p>
 <div class="flex flex-wrap gap-2 mb-4">
-<span class="px-3 py-1 bg-orange-100 text-orange-800 text-xs rounded-full">HTML/CSS</span>
-<span class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">JavaScript</span>
-<span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Tailwind</span>
+<span class="px-3 py-1 bg-orange-900/50 text-orange-200 text-xs rounded-full">HTML/CSS</span>
+<span class="px-3 py-1 bg-blue-900/50 text-blue-200 text-xs rounded-full">Tailwind</span>
 </div>
 <div class="flex gap-3">
 <a href="https://codewithbikram2025.github.io/portfolio_2025/" target="_blank" 
@@ -559,15 +566,15 @@ Your personal guide to better health. HealthMate 2025 helps you track your fitne
 </div>
 </div>
 </div>
-<div class="project-card bg-white bg-opacity-10 p-0 rounded-xl overflow-hidden backdrop-blur-lg text-left shadow-lg" data-category="web">
+
+<div class="neon-card text-left" data-category="web">
 <div class="h-48 bg-cover bg-center" style="background-image: url('pic5.png')"></div>
 <div class="p-6">
 <h3 class="text-xl font-semibold mb-2">Flatfinder</h3>
-<p class="text-gray-400 mb-4">FlatFinder is your trusted property search platform dedicated to flats and homes across Kolkata. Whether you're looking to rent or buy, we offer only verified and affordable listings to make your housing journey smooth, reliable, and stress-free.</p>
+<p class="text-gray-400 mb-4">FlatFinder is your trusted property search platform dedicated to flats and homes across Kolkata.</p>
 <div class="flex flex-wrap gap-2 mb-4">
-<span class="px-3 py-1 bg-pink-100 text-pink-800 text-xs rounded-full">HTML</span>
-<span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">CSS</span>
-<span class="px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">JavaScript</span>
+<span class="px-3 py-1 bg-pink-900/50 text-pink-200 text-xs rounded-full">HTML</span>
+<span class="px-3 py-1 bg-green-900/50 text-green-200 text-xs rounded-full">JS</span>
 </div>
 <div class="flex gap-3">
 <a href="https://flatfinder.me" target="_blank" 
@@ -578,15 +585,15 @@ Your personal guide to better health. HealthMate 2025 helps you track your fitne
 </div>
 </div>
 </div>
-<div class="project-card bg-white bg-opacity-10 p-0 rounded-xl overflow-hidden backdrop-blur-lg text-left shadow-lg" data-category="web">
+
+<div class="neon-card text-left" data-category="web">
 <div class="h-48 bg-cover bg-center" style="background-image: url('pic6.png')"></div>
 <div class="p-6">
 <h3 class="text-xl font-semibold mb-2">Neon Calculator</h3>
-<p class="text-gray-400 mb-4">Neon Calculator is a stylish and easy-to-use web calculator built with HTML, CSS (TailwindCSS), and JavaScript. It performs basic math operations and features a modern glassmorphism design with smooth animations, perfect for both desktop and mobile use.</p>
+<p class="text-gray-400 mb-4">Neon Calculator is a stylish and easy-to-use web calculator built with HTML, CSS and JavaScript.</p>
 <div class="flex flex-wrap gap-2 mb-4">
-<span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">HTML</span>
-<span class="px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">CSS</span>
-<span class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">javascript</span>
+<span class="px-3 py-1 bg-blue-900/50 text-blue-200 text-xs rounded-full">HTML</span>
+<span class="px-3 py-1 bg-green-900/50 text-green-200 text-xs rounded-full">CSS</span>
 </div>
 <div class="flex gap-3">
 <a href="https://codewithbikram2025.github.io/neoncalculator/" target="_blank" 
@@ -597,16 +604,15 @@ Your personal guide to better health. HealthMate 2025 helps you track your fitne
 </div>
 </div>
 </div>
-<div class="project-card bg-white bg-opacity-10 p-0 rounded-xl overflow-hidden backdrop-blur-lg text-left shadow-lg" data-category="web">
+
+<div class="neon-card text-left" data-category="web">
 <div class="h-48 bg-cover bg-center" style="background-image: url('pic4.jpg')"></div>
 <div class="p-6">
 <h3 class="text-xl font-semibold mb-2">Khaabaradda Restrurent</h3>
-<p class="text-gray-400 mb-4">KhaabarAdda – Taste That Speaks for Itself
-KhaabarAdda is an online food platform offering a diverse menu of high-quality dishes. Our goal is to deliver fresh, flavorful meals quickly and conveniently to our customers.</p>
+<p class="text-gray-400 mb-4">KhaabarAdda is an online food platform offering a diverse menu of high-quality dishes.</p>
 <div class="flex flex-wrap gap-2 mb-4">
-<span class="px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full">HTML</span>
-<span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">CSS</span>
-<span class="px-3 py-1 bg-orange-100 text-orange-800 text-xs rounded-full">JavaScript</span>
+<span class="px-3 py-1 bg-green-900/50 text-green-200 text-xs rounded-full">HTML</span>
+<span class="px-3 py-1 bg-orange-900/50 text-orange-200 text-xs rounded-full">JS</span>
 </div>
 <div class="flex gap-3">
 <a href="https://khaabaradda.free.nf" target="_blank" 
@@ -617,15 +623,15 @@ KhaabarAdda is an online food platform offering a diverse menu of high-quality d
 </div>
 </div>
 </div>
-<div class="project-card bg-white bg-opacity-10 p-0 rounded-xl overflow-hidden backdrop-blur-lg text-left shadow-lg" data-category="web">
+
+<div class="neon-card text-left" data-category="web">
 <div class="h-48 bg-cover bg-center" style="background-image: url('pic7.png')"></div>
 <div class="p-6">
 <h3 class="text-xl font-semibold mb-2">Tony Ai Assistant</h3>
-<p class="text-gray-400 mb-4">Tony Ai is a your intelligent companion for everyday tasks. Effortlessly manage schedules, set reminders, draft messages, and get real-time answers—all through intuitive voice or text commands. Designed to boost productivity and simplify your life, our AI assistant is always ready to assist.</p>
+<p class="text-gray-400 mb-4">Tony Ai is a your intelligent companion for everyday tasks. Effortlessly manage schedules and set reminders.</p>
 <div class="flex flex-wrap gap-2 mb-4">
-<span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">HTML</span>
-<span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">CSS</span>
-<span class="px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">JavaScript</span>
+<span class="px-3 py-1 bg-blue-900/50 text-blue-200 text-xs rounded-full">HTML</span>
+<span class="px-3 py-1 bg-purple-900/50 text-purple-200 text-xs rounded-full">CSS</span>
 </div>
 <div class="flex gap-3">
 <a href="https://codewithbikram2025.github.io/Tony-Ai-Virtual-Assistant/" target="_blank" 
@@ -636,15 +642,15 @@ KhaabarAdda is an online food platform offering a diverse menu of high-quality d
 </div>
 </div>
 </div>
-<div class="project-card bg-white bg-opacity-10 p-0 rounded-xl overflow-hidden backdrop-blur-lg text-left shadow-lg" data-category="web">
+
+<div class="neon-card text-left" data-category="web">
 <div class="h-48 bg-cover bg-center" style="background-image: url('pic8.png')"></div>
 <div class="p-6">
 <h3 class="text-xl font-semibold mb-2">WeatherPro</h3>
-<p class="text-gray-400 mb-4">WeatherPro – A real-time weather website built with HTML, CSS, and Vanilla JavaScript, providing accurate updates with a clean and responsive UI.</p>
+<p class="text-gray-400 mb-4">WeatherPro – A real-time weather website built with HTML, CSS, and Vanilla JavaScript.</p>
 <div class="flex flex-wrap gap-2 mb-4">
-<span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">HTML</span>
-<span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">CSS</span>
-<span class="px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">Vanilla JavaScript</span>
+<span class="px-3 py-1 bg-blue-900/50 text-blue-200 text-xs rounded-full">HTML</span>
+<span class="px-3 py-1 bg-purple-900/50 text-purple-200 text-xs rounded-full">CSS</span>
 </div>
 <div class="flex gap-3">
 <a href="https://codewithbikram2025.github.io/WeatherPro/" target="_blank" 
@@ -655,15 +661,15 @@ KhaabarAdda is an online food platform offering a diverse menu of high-quality d
 </div>
 </div>
 </div>
-<div class="project-card bg-white bg-opacity-10 p-0 rounded-xl overflow-hidden backdrop-blur-lg text-left shadow-lg" data-category="web">
+
+<div class="neon-card text-left" data-category="web">
 <div class="h-48 bg-cover bg-center" style="background-image: url('pic9.png')"></div>
 <div class="p-6">
 <h3 class="text-xl font-semibold mb-2">HACKER'S TODO LIST</h3>
-<p class="text-gray-400 mb-4">HACKER'S TODO LIST – A minimalist, command-line–style task manager for hackers and coders. Organize your projects and daily tasks with sleek, terminal-inspired aesthetics—where productivity meets the hacker spirit.</p>
+<p class="text-gray-400 mb-4">HACKER'S TODO LIST – A minimalist, command-line–style task manager for hackers and coders.</p>
 <div class="flex flex-wrap gap-2 mb-4">
-<span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">HTML</span>
-<span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">Tailwind CSS</span>
-<span class="px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">JavaScript</span>
+<span class="px-3 py-1 bg-blue-900/50 text-blue-200 text-xs rounded-full">HTML</span>
+<span class="px-3 py-1 bg-purple-900/50 text-purple-200 text-xs rounded-full">Tailwind</span>
 </div>
 <div class="flex gap-3">
 <a href="https://hacker-s-todo-list.vercel.app/" target="_blank" 
@@ -677,6 +683,8 @@ KhaabarAdda is an online food platform offering a diverse menu of high-quality d
 </div>
 </div>  
 </section>
+
+<!-- CONTACT SECTION -->
 <section id="contact" class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-20 text-white text-center">
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="text-center mb-16 fade-in-up">
@@ -684,7 +692,8 @@ KhaabarAdda is an online food platform offering a diverse menu of high-quality d
 <p class="text-lg text-gray-400">Let's discuss your next project or collaboration opportunity</p>
 </div>
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-<div class="fade-in-up">
+<!-- CONTACT INFO (NEON CARD) -->
+<div class="fade-in-up neon-card p-8 text-left">
 <h3 class="text-2xl font-semibold mb-6 text-white">Contact Information</h3>
 <div class="space-y-6">
 <div class="flex items-center gap-4">
@@ -733,23 +742,25 @@ KhaabarAdda is an online food platform offering a diverse menu of high-quality d
 </div>
 </div>
 </div>
-<div class="fade-in-up">
+
+<!-- CONTACT FORM (NEON CARD) -->
+<div class="fade-in-up neon-card p-8 text-left">
 <form id="contact-form" class="space-y-6">
 <div>
 <label for="name" class="block text-sm font-medium text-gray-400 mb-2">Name</label>
-<input type="text" id="name" name="name" required class="w-full bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-white placeholder-gray-400 shadow-lg border border-transparent focus:border-primary focus:ring-primary focus:outline-none transition-all">
+<input type="text" id="name" name="name" required class="w-full p-3 rounded-xl text-white placeholder-gray-400 focus:outline-none transition-all">
 </div>
 <div>
 <label for="email" class="block text-sm font-medium text-gray-400 mb-2">Email</label>
-<input type="email" id="email" name="email" required class="w-full bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-white placeholder-gray-400 shadow-lg border border-transparent focus:border-primary focus:ring-primary focus:outline-none transition-all">
+<input type="email" id="email" name="email" required class="w-full p-3 rounded-xl text-white placeholder-gray-400 focus:outline-none transition-all">
 </div>
 <div>
 <label for="subject" class="block text-sm font-medium text-gray-400 mb-2">Subject</label>
-<input type="text" id="subject" name="subject" required class="w-full bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-white placeholder-gray-400 shadow-lg border border-transparent focus:border-primary focus:ring-primary focus:outline-none transition-all">
+<input type="text" id="subject" name="subject" required class="w-full p-3 rounded-xl text-white placeholder-gray-400 focus:outline-none transition-all">
 </div>
 <div>
 <label for="message" class="block text-sm font-medium text-gray-400 mb-2">Message</label>
-<textarea id="message" name="message" rows="5" required class="w-full bg-white bg-opacity-10 p-3 rounded-xl backdrop-blur-lg text-white placeholder-gray-400 shadow-lg resize-none border border-transparent focus:border-primary focus:ring-primary focus:outline-none transition-all"></textarea>
+<textarea id="message" name="message" rows="5" required class="w-full p-3 rounded-xl text-white placeholder-gray-400 resize-none focus:outline-none transition-all"></textarea>
 </div>
 <button type="submit" class="w-full bg-primary hover:bg-secondary text-white py-3 px-6 !rounded-button font-medium transition-all duration-300 transform hover:scale-105 whitespace-nowrap">
 Send Message
@@ -849,41 +860,29 @@ entry.target.classList.add('visible');
 if (entry.target.closest('#skills')) {
 const skillBars = entry.target.querySelectorAll('.skill-bar');
 skillBars.forEach(bar => {
-// Use a small delay for each bar to create a staggered effect
 setTimeout(() => {
 bar.classList.add('animate');
-}, parseInt(bar.dataset.delay || 0)); // Allows for custom delays if needed
+}, parseInt(bar.dataset.delay || 0)); 
 });
 }
-} else {
-  // Optional: remove visible class when out of view for re-triggering animation on scroll back up
-  // entry.target.classList.remove('visible'); 
-  // For skill bars, reset width to 0 if you want them to animate every time you scroll past
-  // if (entry.target.closest('#skills')) {
-  //   const skillBars = entry.target.querySelectorAll('.skill-bar');
-  //   skillBars.forEach(bar => {
-  //     bar.classList.remove('animate');
-  //   });
-  // }
 }
 });
 }, observerOptions);
 const fadeElements = document.querySelectorAll('.fade-in-up');
 fadeElements.forEach(el => observer.observe(el));
 
-// Observe skill items to trigger animation
 const skillObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.querySelectorAll('.skill-bar').forEach(bar => {
         bar.classList.add('animate');
       });
-      skillObserver.unobserve(entry.target); // Stop observing once animated
+      skillObserver.unobserve(entry.target); 
     }
   });
-}, { threshold: 0.5 }); // Trigger when 50% of the section is visible
+}, { threshold: 0.5 }); 
 
-document.querySelectorAll('#skills .bg-white.bg-opacity-10').forEach(section => {
+document.querySelectorAll('.neon-card').forEach(section => {
   skillObserver.observe(section);
 });
 
@@ -892,16 +891,16 @@ document.querySelectorAll('#skills .bg-white.bg-opacity-10').forEach(section => 
 <script id="project-filter">
 document.addEventListener('DOMContentLoaded', function() {
 const filterBtns = document.querySelectorAll('.filter-btn');
-const projectCards = document.querySelectorAll('.project-card');
+const projectCards = document.querySelectorAll('.neon-card[data-category]');
 filterBtns.forEach(btn => {
 btn.addEventListener('click', function() {
 const filter = this.getAttribute('data-filter');
 filterBtns.forEach(b => {
 b.classList.remove('active', 'bg-primary', 'text-white');
-b.classList.add('text-gray-600');
+b.classList.add('text-gray-300');
 });
 this.classList.add('active', 'bg-primary', 'text-white');
-this.classList.remove('text-gray-600');
+this.classList.remove('text-gray-300');
 projectCards.forEach(card => {
 if (filter === 'all' || card.getAttribute('data-category') === filter) {
 card.style.display = 'block';
@@ -919,8 +918,6 @@ card.style.display = 'none';
 });
 });
 });
-// Initial active state for 'All' button, already handled by HTML
-// filterBtns[0].classList.add('active', 'bg-primary', 'text-white');
 });
 </script>
 <script id="contact-form-handler">
@@ -964,7 +961,7 @@ behavior: 'smooth'
 function playAudio() {
   const audio = document.getElementById('background-audio');
   audio.play();
-  document.getElementById('audio-control').style.display = 'none'; // Hide button after play
+  document.getElementById('audio-control').style.display = 'none'; 
 }
 </script>
 </body>
