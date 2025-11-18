@@ -67,12 +67,67 @@ transition: width 2s ease-in-out;
 .skill-bar.animate {
 width: var(--skill-width);
 }
+
+/* ---------------------------------------------------------
+   UPDATED PROJECT CARD ANIMATION (FIRE/CURRENT FLOW)
+--------------------------------------------------------- */
+@keyframes rotate-border {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
 .project-card {
-transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px; /* Matches Tailwind rounded-xl */
+    z-index: 1;
+    /* Remove default background to let the pseudo-elements handle it */
+    background: transparent !important; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 .project-card:hover {
-transform: translateY(-8px);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px -5px rgba(51, 236, 10, 0.3); /* Green glow on hover */
 }
+
+/* The Spinning Current/Fire Beam */
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 250%; /* Large enough to cover corners during rotation */
+    height: 250%;
+    /* Conic gradient creates the "beam" effect */
+    background: conic-gradient(
+        transparent 0deg, 
+        transparent 250deg, 
+        #33ec0a 300deg,  /* Primary Green */
+        #1e40af 360deg   /* Secondary Blue */
+    );
+    transform: translate(-50%, -50%);
+    animation: rotate-border 4s linear infinite;
+    z-index: -2;
+}
+
+/* The Inner Background (Masks the center of the beam) */
+.project-card::after {
+    content: '';
+    position: absolute;
+    inset: 2px; /* This determines border thickness */
+    background: rgba(10, 10, 10, 0.8); /* Dark semi-transparent background */
+    backdrop-filter: blur(20px); /* Glass effect */
+    border-radius: 10px;
+    z-index: -1;
+}
+
+/* Ensure text stays above the background */
+.project-card > * {
+    position: relative;
+    z-index: 2;
+}
+/* --------------------------------------------------------- */
 
 html {
 scroll-behavior: smooth;
@@ -86,7 +141,7 @@ background: rgba(255, 255, 255, 0.1);
 }
 /* Header/Navbar specific styles */
 .header-glass {
-    background: rgba(255, 255, 255, 0.15); /* Lighter glass effect for header */
+    background: rgba(255, 255, 255, 0.15); 
     backdrop-filter: blur(12px);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
@@ -113,24 +168,24 @@ background: rgba(255, 255, 255, 0.1);
 
 /* Sidebar Specific Styles */
 .sidebar-closed {
-    transform: translateX(100%); /* Start hidden off-screen */
+    transform: translateX(100%);
     opacity: 0;
     pointer-events: none;
 }
 .sidebar-open {
-    transform: translateX(0); /* Slide into view */
+    transform: translateX(0);
     opacity: 1;
     pointer-events: auto;
 }
 .sidebar {
-    background: rgba(0, 0, 0, 0.85); /* Darker glass for contrast */
-    backdrop-filter: blur(15px); /* Strong blur */
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(15px); 
     border-left: 1px solid rgba(255, 255, 255, 0.2);
-    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease; /* Smooth transition */
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease;
 }
 @media (min-width: 768px) {
   .menu-icon { display: none !important; }
-  .sidebar { display: none !important; } /* Hide sidebar on desktop */
+  .sidebar { display: none !important; } 
 }
 </style>
 </head>
@@ -185,7 +240,6 @@ background: rgba(255, 255, 255, 0.1);
 <a href="#contact" class="nav-link text-white hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Contact</a>
 </div>
 </div>
-<!-- The mobile menu button (<div class="md:hidden">...</div>) is removed from here -->
 </div>
 </nav>
 </header>
