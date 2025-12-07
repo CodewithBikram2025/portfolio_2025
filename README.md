@@ -3,7 +3,7 @@
 
 - 🔭 I’m currently working on **Flatsale Website**
 
-- 🌱 I’m currently learning **DSA in C/C++ programming language**
+- 🌱 I’m currently learning **DSA in Python programming language**
 
 - 👨‍💻 All of my projects are available at [https://portfolio-2025-rho-jet.vercel.app/](https://portfolio-2025-rho-jet.vercel.app/)
 
