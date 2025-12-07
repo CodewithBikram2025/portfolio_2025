@@ -5,7 +5,7 @@
 
 - 🌱 I’m currently learning **DSA in C/C++ programming language**
 
-- 👨‍💻 All of my projects are available at [https://codewithbikram2025.github.io/portfolio.in/](https://codewithbikram2025.github.io/portfolio.in/)
+- 👨‍💻 All of my projects are available at [https://portfolio-2025-rho-jet.vercel.app/](https://portfolio-2025-rho-jet.vercel.app/)
 
 - 📫 How to reach me **pakhirab613@gmail.com**
 
