@@ -72,85 +72,122 @@ width: var(--skill-width);
    UNIVERSAL NEON / FIRE CURRENT ANIMATION
    Applied to: Home Image, About Timeline, Skills, Projects, Contact
 --------------------------------------------------------- */
+/* ===============================
+   ROTATING BORDER ANIMATION
+=================================*/
 @keyframes rotate-border {
-    0% { transform: translate(-50%, -50%) rotate(0deg); }
-    100% { transform: translate(-50%, -50%) rotate(360deg); }
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
 
-/* The Main Container Class */
+/* ===============================
+   MAIN NEON CARD
+=================================*/
 .neon-card {
-    position: relative;
-    overflow: hidden;
-    border-radius: 12px; /* Matches Tailwind rounded-xl */
-    z-index: 1;
-    /* Override any inline background to ensure the effect works */
-    background: transparent !important; 
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px; /* Matches Tailwind rounded-xl */
+  z-index: 1;
+  background: transparent !important;
+
+  /* Smooth transitions */
+  transition: transform 0.3s ease,
+              box-shadow 0.3s ease,
+              opacity 0.3s ease;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+  /* Helps performance in scroll containers */
+  will-change: transform;
 }
 
-/* Hover Effect */
+/* ===============================
+   HOVER EFFECT
+=================================*/
 .neon-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px -5px rgba(51, 236, 10, 0.3); /* Green glow */
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -10px rgba(51, 236, 10, 0.4);
 }
 
-/* The Rotating Beam (Conic Gradient) */
+/* ===============================
+   ROTATING BEAM
+=================================*/
 .neon-card::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    /* Width/Height must be large to cover rectangular corners during rotation */
-    width: 300%; 
-    height: 300%;
-    background: conic-gradient(
-        transparent 0deg, 
-        transparent 250deg, 
-        #33ec0a 300deg,  /* Primary Green */
-        #1e40af 360deg   /* Secondary Blue */
-    );
-    transform: translate(-50%, -50%);
-    animation: rotate-border 4s linear infinite;
-    z-index: -2;
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 300%;
+  height: 300%;
+
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 250deg,
+    #33ec0a 300deg,
+    #1e40af 360deg
+  );
+
+  transform: translate(-50%, -50%);
+  animation: rotate-border 4s linear infinite;
+
+  z-index: -2;
+  pointer-events: none;
 }
 
-/* The Inner Background (Mask) */
+/* ===============================
+   INNER MASK (GLASS EFFECT)
+=================================*/
 .neon-card::after {
-    content: '';
-    position: absolute;
-    inset: 2px; /* Border thickness */
-    background: rgba(15, 15, 20, 0.9); /* Dark background to make neon pop */
-    backdrop-filter: blur(20px);
-    border-radius: 10px;
-    z-index: -1;
+  content: '';
+  position: absolute;
+  inset: 2px; /* Border thickness */
+  background: rgba(15, 15, 20, 0.92);
+  backdrop-filter: blur(20px);
+  border-radius: 10px;
+  z-index: -1;
+  pointer-events: none;
 }
 
-/* Specific tweak for the circular profile image */
+/* ===============================
+   CIRCLE VERSION
+=================================*/
 .neon-circle {
-    border-radius: 9999px;
+  border-radius: 9999px;
 }
 .neon-circle::after {
-    border-radius: 9999px;
+  border-radius: 9999px;
 }
 
-/* Ensure inputs inside neon cards look good */
-.neon-card input, 
+/* ===============================
+   INPUTS INSIDE NEON CARD
+=================================*/
+.neon-card input,
 .neon-card textarea {
-    background: rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: white;
-}
-.neon-card input:focus, 
-.neon-card textarea:focus {
-    border-color: #33ec0a;
-    box-shadow: 0 0 0 1px #33ec0a;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Ensure content sits on top */
+.neon-card input:focus,
+.neon-card textarea:focus {
+  border-color: #33ec0a;
+  box-shadow: 0 0 0 1px #33ec0a;
+  outline: none;
+}
+
+/* ===============================
+   ENSURE CONTENT STAYS ABOVE
+=================================*/
 .neon-card > * {
-    position: relative;
-    z-index: 2;
+  position: relative;
+  z-index: 2;
 }
 /* --------------------------------------------------------- */
 
@@ -1071,36 +1108,63 @@ document.querySelectorAll('.neon-card').forEach(section => {
 </script>
 <script id="project-filter">
 document.addEventListener('DOMContentLoaded', function() {
-const filterBtns = document.querySelectorAll('.filter-btn');
-const projectCards = document.querySelectorAll('.neon-card[data-category]');
-filterBtns.forEach(btn => {
-btn.addEventListener('click', function() {
-const filter = this.getAttribute('data-filter');
-filterBtns.forEach(b => {
-b.classList.remove('active', 'bg-primary', 'text-white');
-b.classList.add('text-gray-300');
-});
-this.classList.add('active', 'bg-primary', 'text-white');
-this.classList.remove('text-gray-300');
-projectCards.forEach(card => {
-if (filter === 'all' || card.getAttribute('data-category') === filter) {
-card.style.display = 'block';
-setTimeout(() => {
-card.style.opacity = '1';
-card.style.transform = 'translateY(0)';
-}, 100);
-} else {
-card.style.opacity = '0';
-card.style.transform = 'translateY(20px)';
-setTimeout(() => {
-card.style.display = 'none';
-}, 300);
-}
-});
-});
-});
+
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const projectCards = document.querySelectorAll('.neon-card[data-category]');
+  const container = document.getElementById('projectsContainer');
+
+  filterBtns.forEach(btn => {
+
+    btn.addEventListener('click', function() {
+
+      const filter = this.getAttribute('data-filter');
+
+      // Reset button styles
+      filterBtns.forEach(b => {
+        b.classList.remove('active', 'bg-primary', 'text-white');
+        b.classList.add('text-gray-300');
+      });
+
+      // Activate current button
+      this.classList.add('active', 'bg-primary', 'text-white');
+      this.classList.remove('text-gray-300');
+
+      // Scroll back to start when filtering
+      container.scrollTo({
+        left: 0,
+        behavior: 'smooth'
+      });
+
+      projectCards.forEach(card => {
+
+        if (filter === 'all' || card.dataset.category === filter) {
+
+          card.style.display = 'block';
+
+          setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          }, 50);
+
+        } else {
+
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(20px)';
+
+          setTimeout(() => {
+            card.style.display = 'none';
+          }, 250);
+        }
+
+      });
+
+    });
+
+  });
+
 });
 </script>
+
 <script id="contact-form-handler">
 document.addEventListener('DOMContentLoaded', function() {
 const contactForm = document.getElementById('contact-form');
